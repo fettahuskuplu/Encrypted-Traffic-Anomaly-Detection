@@ -1,0 +1,28 @@
+# Virtual Environment
+.venv/
+venv/
+ENV/
+
+# PyTorch models and Numpy arrays (avoid uploading heavy binary files)
+egitime_hazir_veri/*.npy
+egitime_hazir_veri/*.pth
+
+# Raw and preprocessed CSV datasets
+dataset/
+temiz_veri/
+
+# Python cache & temporary files
+__pycache__/
+*.py[cod]
+*$py.class
+.ipynb_checkpoints/
+
+# OS files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Local scripts and test results
+run_pipeline.ps1
+test_sonuclari.txt
+
