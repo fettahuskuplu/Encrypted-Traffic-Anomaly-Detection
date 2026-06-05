@@ -1,0 +1,119 @@
+  LSTM MODEL PERFORMANS SONUÇLARI             
+=======================================================
+
+KARMAŞIKLIK MATRİSİ (Confusion Matrix):
+[[289294      1]
+ [  3099      1]]
+
+SINIFLANDIRMA RAPORU (Classification Report):
+               precision    recall  f1-score   support
+
+       Benign       0.99      1.00      0.99    289295
+Infilteration       0.50      0.00      0.00      3100
+
+     accuracy                           0.99    292395
+    macro avg       0.74      0.50      0.50    292395
+ weighted avg       0.98      0.99      0.98    292395
+
+Genel Doğruluk (Accuracy) Skoru: 0.9894
+
+Sonuçların Detaylı Analizi
+Karmaşıklık Matrisine (Confusion Matrix) ve Sınıflandırma Raporuna baktığımızda şu tabloyla karşılaşıyoruz:
+
+Gerçek Normal (Benign) Trafik: 289,295 paketin 289,294'ünü doğru tahmin etmiş. Bu muazzam bir oran.
+
+Gerçek Saldırı (Infiltration): 3,100 adet sızma saldırısının tam 3,099 tanesini gözden kaçırmış ve bunlara "Normal Trafik" demiş. Sadece 1 tanesini yakalayabilmiş.
+
+Recall (Duyarlılık) Skoru: Saldırılar (Infiltration) için Recall değeri 0.00. Yani model saldırıları tespit etme konusunda tamamen kör.
+
+Neden Böyle Oldu?
+Veri setindeki 292 bin paketin yaklaşık 289 bini normal, sadece 3 bini saldırı. Model eğitim sırasında kolaya kaçıp şu kurnazlığı öğrendi: "Gelen her pakete 'Benign' (Normal) dersem, zaten %99 oranında haklı çıkıyorum." Model aslında paketlerin davranışlarını öğrenmedi, sadece istatistiksel çoğunluğa oynadı.
+
+
+
+yeni versiyon için 
+Bu durumu çözmek için veri setindeki normal trafik baskınlığını kırmamız gerekiyor. Sentetik veri üretmek yerine sınıf ağırlıklandırma yöntemini kullanarak modele şu talimatı vermeliyiz: "Normal bir paketi yanlış bilmek önemli değil, ama azınlıkta olan bir saldırı paketini gözden kaçırırsan sana çok daha büyük bir ceza (Loss) vereceğim."
+
+LSTM kodumuzdaki kayıp fonksiyonunu (criterion = nn.CrossEntropyLoss()) bu cezalandırma sistemine göre güncellememiz gerekiyor.
+
+Eğitim kodunun içine şu ağırlık hesaplama bloklarını eklemeliyiz:
+
+
+
+
+LSTM 2
+
+
+Benign (Normal Trafik) Ağırlığı: $292395 / (2 \times 289295) \approx \mathbf{0.50}$
+Infiltration (Saldırı) Ağırlığı: $292395 / (2 \times 3100) \approx \mathbf{47.16}$
+ LSTM MODEL PERFORMANS SONUÇLARI             
+=======================================================
+
+KARMAŞIKLIK MATRİSİ (Confusion Matrix):
+[[242794  46501]
+ [     5   3095]]
+
+SINIFLANDIRMA RAPORU (Classification Report):
+               precision    recall  f1-score   support
+
+       Benign       1.00      0.84      0.91    289295
+Infilteration       0.06      1.00      0.12      3100
+
+     accuracy                           0.84    292395
+    macro avg       0.53      0.92      0.52    292395
+ weighted avg       0.99      0.84      0.90    292395
+
+Genel Doğruluk (Accuracy) Skoru: 0.8409
+2. Modelin Durumunun Yorumlanması (Sonuçlar)
+Sınıf ağırlıklandırma (Cost-Sensitive Learning) eklememiz kesinlikle işe yaramış! Ancak makine öğrenmesindeki o meşhur "ödünleşim" (trade-off) duvarına çarptık. Modelin karakteri tamamen değişti.
+
+Eski ve yeni durumu karşılaştıralım:
+
+Eskiden (Kör Model): 3100 saldırının 3099'unu gözden kaçırıyordu. Genel doğruluğu %99 olsa da güvenlik açısından bir felaketti.
+
+Şimdi (Aşırı Paranoyak Model): 3100 sızma (Infiltration) saldırısının 3095'ini başarıyla yakalamış! Sadece 5 tanesini kaçırmış. Saldırı yakalama oranı (Recall) 0.00'dan 1.00'a (Yüzde 100) fırlamış. Bu, siber güvenlikte muazzam bir başarıdır.
+
+Peki Sorun Ne? Neden Accuracy %84'e Düştü?
+Modelimiz azınlık sınıfa verdiğimiz o yüksek ceza puanlarından o kadar korktu ki, saldırıları kaçırmamak için aşırı hassas, "paranoyak" bir hale geldi.
+
+Karmaşıklık matrisindeki sağ üst köşeye bak: 46.501
+Bu sayı (False Positive - Yanlış Pozitif), aslında tertemiz, tamamen normal olan ağ paketlerine modelin "Bu kesin saldırı!" diyerek alarm vermesi demek.
+
+
+LSTM 3
+
+Benign (Normal Trafik): 1.0
+
+Infiltration (Saldırı Trafiği): 15.0
+
+
+
+
+
+   LSTM MODEL PERFORMANS SONUÇLARI             
+=======================================================
+
+KARMAŞIKLIK MATRİSİ (Confusion Matrix):
+[[275305  13990]
+ [   967   2133]]
+
+SINIFLANDIRMA RAPORU (Classification Report):
+               precision    recall  f1-score   support
+
+       Benign       1.00      0.95      0.97    289295
+Infilteration       0.13      0.69      0.22      3100
+
+     accuracy                           0.95    292395
+    macro avg       0.56      0.82      0.60    292395
+ weighted avg       0.99      0.95      0.97    292395
+
+Genel Doğruluk (Accuracy) Skoru: 0.9488
+1. Alarm Yorgunluğu (False Positive) Büyük Oranda Çözüldü
+Hatırlarsan bir önceki 94 katlık ağır cezalı model, saldırıları kaçırmamak için tam 46.501 tane normal pakete yanlışlıkla "saldırı" (False Positive) demişti. Ceza puanını 15'e indirdiğimiz bu yeni modelde bu sayı 13.990'a düştü! Yani modeli gereksiz yere panik yapmaktan kurtardık ve sahte alarmları %70 oranında azalttık. SOC (Siber Güvenlik Operasyon Merkezi) analistleri bu duruma çok sevinecektir.
+
+2. Saldırı Yakalama Oranı (Recall) Gerçekçi Bir Seviyeye Oturdu
+İlk modelimiz 3100 saldırının sadece 1'ini yakalayabilmişti (Recall: 0.00). Paranoyak modelimiz ise 3095'ini yakalamıştı (Recall: 1.00).
+Şu anki dengeli modelimiz ise 3100 saldırının 2133 tanesini (Recall: 0.69) başarıyla tespit etti. Evet, 967 saldırı gözden kaçtı ancak unutma ki "Infiltration" (Sızma) saldırıları ağ içinde kendini en iyi gizleyen, tespiti en zor saldırı türlerinden biridir. %69'luk bir başarı oranı böylesine zorlu bir sınıf için oldukça saygıdeğer bir referans noktasıdır.
+
+3. F1-Skoru ve Doğruluk (Accuracy) Toparlandı
+Genel doğruluk oranımız o %84'lük çöküşten kurtulup yeniden kabul edilebilir ve güçlü bir seviye olan %94.88'e yükseldi. Sızma saldırıları için F1-Skorumuz da dipten çıkarak 0.22'ye ulaştı.
