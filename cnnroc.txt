@@ -1,0 +1,18 @@
+ CNN + ROC OPTİMİZASYON PERFORMANS SONUÇLARI      
+=======================================================
+
+KARMAŞIKLIK MATRİSİ (Confusion Matrix):
+[[242289  47006]
+ [     3   3097]]
+
+SINIFLANDIRMA RAPORU (Classification Report):
+                   precision    recall  f1-score   support
+
+  Normal (Benign)       1.00      0.84      0.91    289295
+Anomali / Saldırı       0.06      1.00      0.12      3100
+
+         accuracy                           0.84    292395
+        macro avg       0.53      0.92      0.51    292395
+     weighted avg       0.99      0.84      0.90    292395
+
+Genel Doğruluk (Accuracy) Skoru: 0.8392
