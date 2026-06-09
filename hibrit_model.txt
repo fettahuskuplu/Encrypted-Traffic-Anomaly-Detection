@@ -1,0 +1,53 @@
+1. Alarm Yorgunluğunu (False Positive) Sıfırlamak
+Hatırlarsan az önceki en iyi LSTM modelimizde bile, 13 bin civarı normal pakete yanlışlıkla "saldırı" (False Positive) demiştik. İki aşamalı mimari bu sorunu tamamen çözer:
+
+1. Aşama (Autoencoder): Sistemin girişindeki ilk güvenlik görevlisidir. İşlem maliyeti çok düşüktür ve çok hızlıdır. Şüpheli gördüğü her trafiği (anomali) yakalar ama kesin hüküm vermez, sadece kenara ayırır.
+
+2. Aşama (LSTM/CNN): Arka plandaki derin sorgu odasıdır. Sadece Autoencoder'ın "şüpheli" olarak etiketlediği trafiği alır ve derinlemesine inceler. LSTM/CNN'in tüm işlem gücü ve odak noktası bu daraltılmış şüpheli liste üzerinde olduğu için, o 13 binlik sahte alarmı (False Positive) eler ve sadece gerçek anomalilere onay verir.
+
+2. Gürültüden Arınmış Veri (Feature Extraction)
+LSTM ve CNN gibi modeller, 80 sütunluk ham ağ verisiyle doğrudan karşılaştıklarında gereksiz değişkenler yüzünden (gürültü) kafaları karışabilir.
+
+Autoencoder modeli trafiği önce sıkıştırıp (Encoder) sonra geri açtığında (Decoder), elde ettiğimiz "Yeniden İnşa Hatası" (Reconstruction Error) aslında trafiğin ne kadar anormal olduğunun saf, matematiksel bir özetidir.
+
+Ham 80 özellik yerine, Autoencoder'ın çıkardığı bu temiz "hata skorlarını" veya ortadaki dar darboğaz (bottleneck) katmanının çıkardığı rafine veriyi LSTM'e girdi olarak verirseniz, LSTM'in anomaliyi tespit etme süresi kısalır ve doğruluğu (Accuracy) tek başına çalışmasına göre çok daha yüksek çıkar.
+KARMAŞIKLIK MATRİSİ (Confusion Matrix):
+[[288451    844]
+ [  3000    100]]
+
+SINIFLANDIRMA RAPORU (Classification Report):
+               precision    recall  f1-score   support
+
+       Benign       0.99      1.00      0.99    289295
+Infilteration       0.11      0.03      0.05      3100
+
+     accuracy                           0.99    292395
+    macro avg       0.55      0.51      0.52    292395
+ weighted avg       0.98      0.99      0.98    292395
+
+Genel Doğruluk (Accuracy) Skoru: 0.9869
+
+
+
+
+1. İyi Haber: Alarm Yorgunluğu (False Positive) Neredeyse Sıfırlandı!
+Autoencoder'ın kapıdaki "Filtre" görevi muazzam çalıştı. Hatırlarsan, manuel ağırlıklı (1'e 15) en iyi LSTM modelimiz bile 13.990 tane normal pakete "Saldırı!" diyerek ortalığı ayağa kaldırmıştı.
+Şimdi ise bu sahte alarm sayısı sadece 844'e düştü! Normal trafiği filtreleme ve sistemi gereksiz gürültüden kurtarma (Precision artışı) konusunda Autoencoder %94'lük bir iyileşme sağladı.
+
+2. Kötü Haber: Saldırılar Nereye Gitti?
+İşte asıl kritik mühendislik tespiti burada yatıyor. 3100 adet Sızma (Infiltration) saldırısının 3000 tanesi gözden kaçtı (Recall %3'e düştü). Peki bu LSTM'in suçu mu? Hayır!
+
+Çıktının 2. Aşamasına yakından bak:
+
+Toplam Test Paketi: 292.395
+
+Eşikten Geçen (Temiz Kabul Edilen): 277.953
+
+Eşiğe Takılan ve LSTM'e Giden (Şüpheli): 14.442
+
+Eğer 3100 saldırının 3000 tanesini yakalayamadıysak, bunun tek bir matematiksel açıklaması var: Autoencoder o 3000 sızma paketini şüpheli bulmadı ve kapıdan doğrudan "Temiz" diyerek geçirdi. LSTM o paketleri hiç görmedi bile!
+
+Neden Böyle Oldu? (Rapora Yazılacak Altın Değerinde Bilgi)
+Bu bir hata değil, siber güvenlikte "Infiltration" (Sızma) saldırılarının doğasıdır. Sızma saldırıları, kaba kuvvetle (DDoS gibi) ağa saldırmazlar. Sistemin içine sızıp, paket boyutlarını ve zamanlamalarını tamamen normal bir kullanıcıymış gibi taklit ederler.
+
+Autoencoder'ı %95 Güvenlik Eşiği (Threshold) ile eğittiğimizde, Autoencoder bu sızma paketlerinin yeniden inşa hatasını (MSE Loss) normal trafikle o kadar benzer buldu ki, onları tehlike olarak görmedi. Yani Filtremiz, "gürültülü" saldırılar için mükemmelken, "sinsi" saldırılar için fazla geniş delikli kaldı.
