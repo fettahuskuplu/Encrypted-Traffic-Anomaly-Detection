@@ -10,19 +10,19 @@ class Autoencoder(nn.Module):
     def __init__(self, input_dim):
         super(Autoencoder, self).__init__()
         self.encoder = nn.Sequential(
-            nn.Linear(input_dim, 32),
-            nn.ReLU(True),
-            nn.Linear(32, 16),
+            nn.Linear(input_dim, 16),
             nn.ReLU(True),
             nn.Linear(16, 8),
+            nn.ReLU(True),
+            nn.Linear(8, 4),
             nn.ReLU(True)
         )
         self.decoder = nn.Sequential(
+            nn.Linear(4, 8),
+            nn.ReLU(True),
             nn.Linear(8, 16),
             nn.ReLU(True),
-            nn.Linear(16, 32),
-            nn.ReLU(True),
-            nn.Linear(32, input_dim),
+            nn.Linear(16, input_dim),
             nn.Sigmoid()
         )
     def forward(self, x):
@@ -59,8 +59,8 @@ def test_ve_anomali_tespiti():
     
     X_val_tahmin_np = X_val_tahmin.cpu().numpy()
     
-    # Doğrulama verisi için Yeniden İnşa Hatası (MSE) hesaplayalım
-    val_hatalar = np.mean(np.power(X_val - X_val_tahmin_np, 2), axis=1)
+    # Doğrulama verisi için Yeniden İnşa Hatası (MAE - Ortalama Mutlak Hata) hesaplayalım
+    val_hatalar = np.mean(np.abs(X_val - X_val_tahmin_np), axis=1)
     
     # Sadece normal doğrulama verisinin hatalarını seçelim
     normal_val_hatalar = val_hatalar[y_val == 0]
@@ -82,8 +82,8 @@ def test_ve_anomali_tespiti():
         
     X_test_tahmin_np = X_test_tahmin.cpu().numpy()
     
-    # Test verisi için Yeniden İnşa Hatası (MSE) hesaplayalım
-    hatalar = np.mean(np.power(X_test - X_test_tahmin_np, 2), axis=1)
+    # Test verisi için Yeniden İnşa Hatası (MAE - Ortalama Mutlak Hata) hesaplayalım
+    hatalar = np.mean(np.abs(X_test - X_test_tahmin_np), axis=1)
     print(f"    - {len(X_test)} adet ağ paketi sadece {test_sure:.2f} saniyede tarandı ve test edildi!")
     
     # Eğer hata belirlenen esik_degerinden büyükse 1 (Saldırı/Anomali), küçükse 0 (Normal) de

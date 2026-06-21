@@ -13,21 +13,21 @@ class Autoencoder(nn.Module):
         
         # Encoder (Sıkıştırma Bölümü)
         self.encoder = nn.Sequential(
-            nn.Linear(input_dim, 32),
+            nn.Linear(input_dim, 16),
             nn.ReLU(True),
-            nn.Linear(32, 16),
+            nn.Linear(16, 8),
             nn.ReLU(True),
-            nn.Linear(16, 8), # Darboğaz (Bottleneck) Katmanı 16'dan 8'e düşürüldü
+            nn.Linear(8, 4), # Darboğaz (Bottleneck) Katmanı 8'den 4'e düşürüldü
             nn.ReLU(True)
         )
         
         # Decoder (Geri Oluşturma Bölümü)
         self.decoder = nn.Sequential(
+            nn.Linear(4, 8),
+            nn.ReLU(True),
             nn.Linear(8, 16),
             nn.ReLU(True),
-            nn.Linear(16, 32),
-            nn.ReLU(True),
-            nn.Linear(32, input_dim),
+            nn.Linear(16, input_dim),
             nn.Sigmoid() # Girdi verimiz Min-Max Scaling ile 0-1 arasında olduğu için Sigmoid kullanıyoruz
         )
         

@@ -33,9 +33,9 @@ def temizle_ve_filtrele(girdi_klasoru, cikti_klasoru, chunk_size=500000):
             # 1. Sütun isimlerindeki boşlukları temizle
             chunk.columns = chunk.columns.str.strip()
             
-            # 2. Sadece HTTPS (443) Filtrelemesi
+            # 2. Şifreli Trafik (HTTPS Port 443 ve SSH Port 22) Filtrelemesi
             if 'Dst Port' in chunk.columns:
-                chunk = chunk[chunk['Dst Port'] == 443]
+                chunk = chunk[chunk['Dst Port'].isin([443, 22])]
             
             if len(chunk) == 0:
                 continue

@@ -37,6 +37,14 @@ def ozellik_muhendisligi_yap(girdi_klasoru, cikti_klasoru):
         tam_veri.drop(columns=sayisal_olmayan_kolonlar, inplace=True)
         print(f"    - Silinen Metin Kolonları: {sayisal_olmayan_kolonlar}")
         
+    # MÜHENDİSLİK KARARI: Modellerin port numarasını (22 veya 443) veya protokol değerini ezberlemesini önlemek için
+    # 'Dst Port' ve 'Protocol' sütunlarını manuel olarak kaldırıyoruz.
+    zorunlu_silinecekler = ['Dst Port', 'Protocol']
+    for col in zorunlu_silinecekler:
+        if col in tam_veri.columns:
+            tam_veri.drop(columns=[col], inplace=True)
+            print(f"    - Silinen Güvenlik Sızıntısı Kolonu (Port/Protocol): {col}")
+        
     print("[3/6] Hedef değişken (Label) ve Özellikler (X) ayrılıyor ve Gizli Hatalar Temizleniyor...")
     # 'Label' hariç tüm kolonları bulalım ve zorla sayısala çevirelim. 
     # 'Infinity' veya '-' gibi stringler bu sayede zorla NaN (Boş) değerine dönüşecek.
@@ -70,14 +78,16 @@ def ozellik_muhendisligi_yap(girdi_klasoru, cikti_klasoru):
     y = tam_veri['Label'].values
     X = tam_veri.drop(columns=['Label']).values
 
-    print("[4/6] Etiketler numaralara dönüştürülüyor (Label Encoding)...")
-    # Örn: 'Benign' -> 0, 'DDoS' -> 1 vb.
-    le = LabelEncoder()
-    y_encoded = le.fit_transform(y)
-    
-    # Hangi sayının hangi sınıfa denk geldiğini kaydedelim ki sonra analiz ederken bilelim
-    siniflar = le.classes_
-    print("    - Sınıf Dağılımı Sırasi (0, 1, 2...):", siniflar)
+    print("[4/6] Etiketler numaralara dönüştürülüyor (İkili / Binary Encoding)...")
+    # 'Benign' -> 0, Diğer tüm saldırılar (Infilteration, SSH-BruteForce vb.) -> 1
+    y_encoded = np.where(y == 'Benign', 0, 1)
+    siniflar = np.array(['Benign', 'Anomaly'])
+    print("    - Sınıf Dağılımı Sırasi (0: Normal, 1: Anomali):", siniflar)
+    # Sınıf miktarlarını yazdıralım
+    benzersiz, sayilar = np.unique(y_encoded, return_counts=True)
+    for b, s in zip(benzersiz, sayilar):
+        label_name = "Benign (Normal)" if b == 0 else "Anomaly (Saldırı)"
+        print(f"      {label_name}: {s}")
 
     print("[5/6] Veri Eğitim (%70), Doğrulama (%15) ve Test (%15) olarak bölünüyor...")
     # Çift aşamalı split ile %70 - %15 - %15 oranlarını elde ediyoruz ve sınıf dengesini (stratify) koruyoruz.
@@ -89,6 +99,27 @@ def ozellik_muhendisligi_yap(girdi_klasoru, cikti_klasoru):
     X_val, X_test, y_val, y_test = train_test_split(
         X_temp, y_temp, test_size=0.50, random_state=42, stratify=y_temp
     )
+
+    # --- YENİ: Sadece Eğitim Setini Dengeleme (Under-sampling) ---
+    print("    - Eğitim setindeki sınıf dengesizliği gideriliyor (Under-sampling)...")
+    idx_class_0 = np.where(y_train == 0)[0]
+    idx_class_1 = np.where(y_train == 1)[0]
+    
+    num_class_1 = len(idx_class_1)
+    
+    # 0 sınıfından 1 sınıfının sayısı kadar rastgele örnek seçelim
+    np.random.seed(42)
+    sampled_idx_class_0 = np.random.choice(idx_class_0, size=num_class_1, replace=False)
+    
+    # İndeksleri birleştirip karıştıralım
+    balanced_train_idx = np.concatenate([sampled_idx_class_0, idx_class_1])
+    np.random.shuffle(balanced_train_idx)
+    
+    X_train = X_train[balanced_train_idx]
+    y_train = y_train[balanced_train_idx]
+    print(f"    - Eğitim seti dengelendi! Yeni X_train boyutu: {X_train.shape}")
+    print(f"      Sınıf 0 (Benign): {np.sum(y_train == 0)}, Sınıf 1 (Anomaly): {np.sum(y_train == 1)}")
+
 
     print("[6/6] Özellikler 0 ile 1 arasına ölçeklendiriliyor (Min-Max Scaling)...")
     scaler = MinMaxScaler()

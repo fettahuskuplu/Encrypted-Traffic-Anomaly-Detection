@@ -1,0 +1,11494 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+<html lang="tr">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<head>
+
+
+
+
+
+
+
+    <meta charset="UTF-8">
+
+
+
+
+
+
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+
+
+
+
+
+    <title>Siber Güvenlik Anomali Tespit Dashboard</title>
+
+
+
+
+
+
+
+    <!-- Google Fonts: Inter & Outfit -->
+
+
+
+
+
+
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+
+
+
+
+
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+
+
+
+
+
+
+    <link
+
+
+
+
+
+
+
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800&display=swap"
+
+
+
+
+
+
+
+        rel="stylesheet">
+
+
+
+
+
+
+
+    <!-- FontAwesome for Icons -->
+
+
+
+
+
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+
+
+
+
+
+
+    <!-- Chart.js CDN -->
+
+
+
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+
+
+
+
+
+    <style>
+
+
+
+
+
+
+
+        :root {
+
+
+
+
+
+
+
+            --bg-primary: #080b11;
+
+
+
+
+
+
+
+            --bg-secondary: #0f1524;
+
+
+
+
+
+
+
+            --bg-card: rgba(20, 27, 45, 0.7);
+
+
+
+
+
+
+
+            --border-color: rgba(59, 130, 246, 0.15);
+
+
+
+
+
+
+
+            --border-hover: rgba(168, 85, 247, 0.4);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            --text-primary: #f3f4f6;
+
+
+
+
+
+
+
+            --text-secondary: #9ca3af;
+
+
+
+
+
+
+
+            --text-muted: #6b7280;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            --color-blue: #3b82f6;
+
+
+
+
+
+
+
+            --color-purple: #a855f7;
+
+
+
+
+
+
+
+            --color-cyan: #06b6d4;
+
+
+
+
+
+
+
+            --color-green: #10b981;
+
+
+
+
+
+
+
+            --color-red: #ef4444;
+
+
+
+
+
+
+
+            --color-orange: #f97316;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            --grad-primary: linear-gradient(135deg, #3b82f6 0%, #a855f7 100%);
+
+
+
+
+
+
+
+            --grad-cyan: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+
+
+
+
+
+
+
+            --grad-danger: linear-gradient(135deg, #ef4444 0%, #f97316 100%);
+
+
+
+
+
+
+
+            --grad-green: linear-gradient(135deg, #10b981 0%, #059669 100%);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            --shadow-glow: 0 0 20px rgba(168, 85, 247, 0.15);
+
+
+
+
+
+
+
+            --shadow-glow-blue: 0 0 20px rgba(59, 130, 246, 0.2);
+
+
+
+
+
+
+
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        * {
+
+
+
+
+
+
+
+            margin: 0;
+
+
+
+
+
+
+
+            padding: 0;
+
+
+
+
+
+
+
+            box-sizing: border-box;
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        body {
+
+
+
+
+
+
+
+            font-family: 'Inter', sans-serif;
+
+
+
+
+
+
+
+            background-color: var(--bg-primary);
+
+
+
+
+
+
+
+            color: var(--text-primary);
+
+
+
+
+
+
+
+            min-height: 100vh;
+
+
+
+
+
+
+
+            overflow-x: hidden;
+
+
+
+
+
+
+
+            background-image:
+
+
+
+
+
+
+
+                radial-gradient(circle at 10% 20%, rgba(59, 130, 246, 0.08) 0%, transparent 40%),
+
+
+
+
+
+
+
+                radial-gradient(circle at 90% 80%, rgba(168, 85, 247, 0.08) 0%, transparent 40%);
+
+
+
+
+
+
+
+            background-attachment: fixed;
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        h1,
+
+
+
+
+
+
+
+        h2,
+
+
+
+
+
+
+
+        h3,
+
+
+
+
+
+
+
+        h4,
+
+
+
+
+
+
+
+        .font-outfit {
+
+
+
+
+
+
+
+            font-family: 'Outfit', sans-serif;
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /* Layout Structure */
+
+
+
+
+
+
+
+        .app-container {
+
+
+
+
+
+
+
+            display: flex;
+
+
+
+
+
+
+
+            min-height: 100vh;
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /* Sidebar Styling */
+
+
+
+
+
+
+
+        .sidebar {
+
+
+
+
+
+
+
+            width: 280px;
+
+
+
+
+
+
+
+            background-color: var(--bg-secondary);
+
+
+
+
+
+
+
+            border-right: 1px solid var(--border-color);
+
+
+
+
+
+
+
+            padding: 2rem 1.5rem;
+
+
+
+
+
+
+
+            display: flex;
+
+
+
+
+
+
+
+            flex-direction: column;
+
+
+
+
+
+
+
+            gap: 2rem;
+
+
+
+
+
+
+
+            position: fixed;
+
+
+
+
+
+
+
+            height: 100vh;
+
+
+
+
+
+
+
+            z-index: 100;
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .brand {
+
+
+
+
+
+
+
+            display: flex;
+
+
+
+
+
+
+
+            align-items: center;
+
+
+
+
+
+
+
+            gap: 0.75rem;
+
+
+
+
+
+
+
+            font-size: 1.4rem;
+
+
+
+
+
+
+
+            font-weight: 800;
+
+
+
+
+
+
+
+            background: var(--grad-primary);
+
+
+
+
+
+
+
+            -webkit-background-clip: text;
+
+
+
+
+
+
+
+            -webkit-text-fill-color: transparent;
+
+
+
+
+
+
+
+            letter-spacing: -0.5px;
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .brand i {
+
+
+
+
+
+
+
+            -webkit-text-fill-color: initial;
+
+
+
+
+
+
+
+            color: var(--color-purple);
+
+
+
+
+
+
+
+            text-shadow: 0 0 10px rgba(168, 85, 247, 0.5);
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .nav-menu {
+
+
+
+
+
+
+
+            display: flex;
+
+
+
+
+
+
+
+            flex-direction: column;
+
+
+
+
+
+
+
+            gap: 0.5rem;
+
+
+
+
+
+
+
+            list-style: none;
+
+
+
+
+
+
+
+            flex-grow: 1;
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .nav-item {
+
+
+
+
+
+
+
+            display: flex;
+
+
+
+
+
+
+
+            align-items: center;
+
+
+
+
+
+
+
+            gap: 1rem;
+
+
+
+
+
+
+
+            padding: 0.85rem 1rem;
+
+
+
+
+
+
+
+            color: var(--text-secondary);
+
+
+
+
+
+
+
+            text-decoration: none;
+
+
+
+
+
+
+
+            border-radius: 12px;
+
+
+
+
+
+
+
+            font-weight: 500;
+
+
+
+
+
+
+
+            transition: var(--transition);
+
+
+
+
+
+
+
+            cursor: pointer;
+
+
+
+
+
+
+
+            border: 1px solid transparent;
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .nav-item:hover,
+
+
+
+
+
+
+
+        .nav-item.active {
+
+
+
+
+
+
+
+            color: var(--text-primary);
+
+
+
+
+
+
+
+            background-color: rgba(59, 130, 246, 0.1);
+
+
+
+
+
+
+
+            border-color: rgba(59, 130, 246, 0.2);
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .nav-item.active {
+
+
+
+
+
+
+
+            background: linear-gradient(90deg, rgba(59, 130, 246, 0.15) 0%, rgba(168, 85, 247, 0.15) 100%);
+
+
+
+
+
+
+
+            border-color: var(--color-purple);
+
+
+
+
+
+
+
+            box-shadow: var(--shadow-glow);
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .nav-item i {
+
+
+
+
+
+
+
+            font-size: 1.15rem;
+
+
+
+
+
+
+
+            width: 24px;
+
+
+
+
+
+
+
+            text-align: center;
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .sidebar-footer {
+
+
+
+
+
+
+
+            border-top: 1px solid var(--border-color);
+
+
+
+
+
+
+
+            padding-top: 1.5rem;
+
+
+
+
+
+
+
+            font-size: 0.8rem;
+
+
+
+
+
+
+
+            color: var(--text-muted);
+
+
+
+
+
+
+
+            display: flex;
+
+
+
+
+
+
+
+            flex-direction: column;
+
+
+
+
+
+
+
+            gap: 0.5rem;
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .project-badge {
+
+
+
+
+
+
+
+            display: inline-block;
+
+
+
+
+
+
+
+            background: rgba(168, 85, 247, 0.15);
+
+
+
+
+
+
+
+            color: var(--color-purple);
+
+
+
+
+
+
+
+            padding: 0.25rem 0.6rem;
+
+
+
+
+
+
+
+            border-radius: 20px;
+
+
+
+
+
+
+
+            font-size: 0.75rem;
+
+
+
+
+
+
+
+            font-weight: 600;
+
+
+
+
+
+
+
+            align-self: flex-start;
+
+
+
+
+
+
+
+            border: 1px solid rgba(168, 85, 247, 0.3);
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /* Main Content Styling */
+
+
+
+
+
+
+
+        .main-content {
+
+
+
+
+
+
+
+            margin-left: 280px;
+
+
+
+
+
+
+
+            flex-grow: 1;
+
+
+
+
+
+
+
+            padding: 2.5rem;
+
+
+
+
+
+
+
+            max-width: 1600px;
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        header {
+
+
+
+
+
+
+
+            display: flex;
+
+
+
+
+
+
+
+            justify-content: space-between;
+
+
+
+
+
+
+
+            align-items: center;
+
+
+
+
+
+
+
+            margin-bottom: 2.5rem;
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .header-title h2 {
+
+
+
+
+
+
+
+            font-size: 2rem;
+
+
+
+
+
+
+
+            font-weight: 700;
+
+
+
+
+
+
+
+            letter-spacing: -0.5px;
+
+
+
+
+
+
+
+            margin-bottom: 0.25rem;
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .header-title p {
+
+
+
+
+
+
+
+            color: var(--text-secondary);
+
+
+
+
+
+
+
+            font-size: 0.95rem;
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .status-badge-container {
+
+
+
+
+
+
+
+            display: flex;
+
+
+
+
+
+
+
+            align-items: center;
+
+
+
+
+
+
+
+            gap: 1rem;
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .status-card {
+
+
+
+
+
+
+
+            background-color: var(--bg-secondary);
+
+
+
+
+
+
+
+            border: 1px solid var(--border-color);
+
+
+
+
+
+
+
+            padding: 0.5rem 1rem;
+
+
+
+
+
+
+
+            border-radius: 12px;
+
+
+
+
+
+
+
+            display: flex;
+
+
+
+
+
+
+
+            align-items: center;
+
+
+
+
+
+
+
+            gap: 0.5rem;
+
+
+
+
+
+
+
+            font-size: 0.85rem;
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .status-dot {
+
+
+
+
+
+
+
+            width: 8px;
+
+
+
+
+
+
+
+            height: 8px;
+
+
+
+
+
+
+
+            background-color: var(--color-green);
+
+
+
+
+
+
+
+            border-radius: 50%;
+
+
+
+
+
+
+
+            box-shadow: 0 0 8px var(--color-green);
+
+
+
+
+
+
+
+            animation: pulse 2s infinite;
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        @keyframes pulse {
+
+
+
+
+
+
+
+            0% {
+
+
+
+
+
+
+
+                transform: scale(0.95);
+
+
+
+
+
+
+
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+
+
+
+
+
+
+
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            70% {
+
+
+
+
+
+
+
+                transform: scale(1);
+
+
+
+
+
+
+
+                box-shadow: 0 0 0 6px rgba(16, 185, 129, 0);
+
+
+
+
+
+
+
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            100% {
+
+
+
+
+
+
+
+                transform: scale(0.95);
+
+
+
+
+
+
+
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+
+
+
+
+
+
+
+            }
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /* Grid System */
+
+
+
+
+
+
+
+        .dashboard-grid {
+
+
+
+
+
+
+
+            display: grid;
+
+
+
+
+
+
+
+            grid-template-columns: repeat(4, 1fr);
+
+
+
+
+
+
+
+            gap: 1.5rem;
+
+
+
+
+
+
+
+            margin-bottom: 2.5rem;
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /* Glassmorphism Cards */
+
+
+
+
+
+
+
+        .card {
+
+
+
+
+
+
+
+            background: var(--bg-card);
+
+
+
+
+
+
+
+            backdrop-filter: blur(12px);
+
+
+
+
+
+
+
+            border: 1px solid var(--border-color);
+
+
+
+
+
+
+
+            border-radius: 16px;
+
+
+
+
+
+
+
+            padding: 1.5rem;
+
+
+
+
+
+
+
+            transition: var(--transition);
+
+
+
+
+
+
+
+            position: relative;
+
+
+
+
+
+
+
+            overflow: hidden;
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .card::before {
+
+
+
+
+
+
+
+            content: '';
+
+
+
+
+
+
+
+            position: absolute;
+
+
+
+
+
+
+
+            top: 0;
+
+
+
+
+
+
+
+            left: 0;
+
+
+
+
+
+
+
+            width: 100%;
+
+
+
+
+
+
+
+            height: 4px;
+
+
+
+
+
+
+
+            background: transparent;
+
+
+
+
+
+
+
+            transition: var(--transition);
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .card:hover {
+
+
+
+
+
+
+
+            transform: translateY(-5px);
+
+
+
+
+
+
+
+            border-color: var(--border-hover);
+
+
+
+
+
+
+
+            box-shadow: var(--shadow-glow);
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .card-stat {
+
+
+
+
+
+
+
+            display: flex;
+
+
+
+
+
+
+
+            flex-direction: column;
+
+
+
+
+
+
+
+            gap: 0.5rem;
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .card-stat-header {
+
+
+
+
+
+
+
+            display: flex;
+
+
+
+
+
+
+
+            justify-content: space-between;
+
+
+
+
+
+
+
+            align-items: center;
+
+
+
+
+
+
+
+            color: var(--text-secondary);
+
+
+
+
+
+
+
+            font-size: 0.9rem;
+
+
+
+
+
+
+
+            font-weight: 500;
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .card-stat-icon {
+
+
+
+
+
+
+
+            width: 38px;
+
+
+
+
+
+
+
+            height: 38px;
+
+
+
+
+
+
+
+            border-radius: 10px;
+
+
+
+
+
+
+
+            display: flex;
+
+
+
+
+
+
+
+            align-items: center;
+
+
+
+
+
+
+
+            justify-content: center;
+
+
+
+
+
+
+
+            font-size: 1.1rem;
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .card-stat-value {
+
+
+
+
+
+
+
+            font-size: 2.2rem;
+
+
+
+
+
+
+
+            font-weight: 800;
+
+
+
+
+
+
+
+            letter-spacing: -1px;
+
+
+
+
+
+
+
+            margin-top: 0.25rem;
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .card-stat-footer {
+
+
+
+
+
+
+
+            font-size: 0.8rem;
+
+
+
+
+
+
+
+            color: var(--text-muted);
+
+
+
+
+
+
+
+            margin-top: 0.5rem;
+
+
+
+
+
+
+
+            display: flex;
+
+
+
+
+
+
+
+            align-items: center;
+
+
+
+
+
+
+
+            gap: 0.35rem;
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .card-stat-footer.up {
+
+
+
+
+
+
+
+            color: var(--color-green);
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .card-stat-footer.down {
+
+
+
+
+
+
+
+            color: var(--color-red);
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /* Card Color Accents */
+
+
+
+
+
+
+
+        .accent-blue::before {
+
+
+
+
+
+
+
+            background: var(--grad-cyan);
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .accent-blue .card-stat-icon {
+
+
+
+
+
+
+
+            background: rgba(6, 182, 212, 0.15);
+
+
+
+
+
+
+
+            color: var(--color-cyan);
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .accent-purple::before {
+
+
+
+
+
+
+
+            background: var(--grad-primary);
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .accent-purple .card-stat-icon {
+
+
+
+
+
+
+
+            background: rgba(168, 85, 247, 0.15);
+
+
+
+
+
+
+
+            color: var(--color-purple);
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .accent-green::before {
+
+
+
+
+
+
+
+            background: var(--grad-green);
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .accent-green .card-stat-icon {
+
+
+
+
+
+
+
+            background: rgba(16, 185, 129, 0.15);
+
+
+
+
+
+
+
+            color: var(--color-green);
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .accent-danger::before {
+
+
+
+
+
+
+
+            background: var(--grad-danger);
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .accent-danger .card-stat-icon {
+
+
+
+
+
+
+
+            background: rgba(239, 68, 68, 0.15);
+
+
+
+
+
+
+
+            color: var(--color-red);
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /* Multi-column Layouts */
+
+
+
+
+
+
+
+        .two-col-grid {
+
+
+
+
+
+
+
+            display: grid;
+
+
+
+
+
+
+
+            grid-template-columns: 2fr 1fr;
+
+
+
+
+
+
+
+            gap: 1.5rem;
+
+
+
+
+
+
+
+            margin-bottom: 2.5rem;
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .equal-grid {
+
+
+
+
+
+
+
+            display: grid;
+
+
+
+
+
+
+
+            grid-template-columns: 1fr 1fr;
+
+
+
+
+
+
+
+            gap: 1.5rem;
+
+
+
+
+
+
+
+            margin-bottom: 2.5rem;
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .section-header {
+
+
+
+
+
+
+
+            display: flex;
+
+
+
+
+
+
+
+            justify-content: space-between;
+
+
+
+
+
+
+
+            align-items: center;
+
+
+
+
+
+
+
+            margin-bottom: 1.25rem;
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .section-title {
+
+
+
+
+
+
+
+            font-size: 1.25rem;
+
+
+
+
+
+
+
+            font-weight: 700;
+
+
+
+
+
+
+
+            display: flex;
+
+
+
+
+
+
+
+            align-items: center;
+
+
+
+
+
+
+
+            gap: 0.5rem;
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .section-title i {
+
+
+
+
+
+
+
+            color: var(--color-blue);
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /* Custom Tabs inside Card */
+
+
+
+
+
+
+
+        .tabs-header {
+
+
+
+
+
+
+
+            display: flex;
+
+
+
+
+
+
+
+            gap: 0.5rem;
+
+
+
+
+
+
+
+            background: rgba(8, 11, 17, 0.5);
+
+
+
+
+
+
+
+            padding: 0.35rem;
+
+
+
+
+
+
+
+            border-radius: 10px;
+
+
+
+
+
+
+
+            border: 1px solid var(--border-color);
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .tab-btn {
+
+
+
+
+
+
+
+            background: transparent;
+
+
+
+
+
+
+
+            border: none;
+
+
+
+
+
+
+
+            color: var(--text-secondary);
+
+
+
+
+
+
+
+            padding: 0.5rem 1rem;
+
+
+
+
+
+
+
+            font-size: 0.85rem;
+
+
+
+
+
+
+
+            font-weight: 600;
+
+
+
+
+
+
+
+            cursor: pointer;
+
+
+
+
+
+
+
+            border-radius: 8px;
+
+
+
+
+
+
+
+            transition: var(--transition);
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .tab-btn:hover {
+
+
+
+
+
+
+
+            color: var(--text-primary);
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .tab-btn.active {
+
+
+
+
+
+
+
+            background: var(--bg-secondary);
+
+
+
+
+
+
+
+            color: var(--text-primary);
+
+
+
+
+
+
+
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+
+
+
+
+
+
+
+            border: 1px solid rgba(255, 255, 255, 0.05);
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /* Matrix Visualization Styles */
+
+
+
+
+
+
+
+        .matrix-container {
+
+
+
+
+
+
+
+            display: grid;
+
+
+
+
+
+
+
+            grid-template-columns: 1fr 1fr;
+
+
+
+
+
+
+
+            gap: 1.5rem;
+
+
+
+
+
+
+
+            margin-top: 1rem;
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .confusion-matrix-grid {
+
+
+
+
+
+
+
+            display: grid;
+
+
+
+
+
+
+
+            grid-template-columns: auto 1fr 1fr;
+
+
+
+
+
+
+
+            grid-template-rows: auto 1fr 1fr;
+
+
+
+
+
+
+
+            gap: 0.5rem;
+
+
+
+
+
+
+
+            text-align: center;
+
+
+
+
+
+
+
+            font-size: 0.9rem;
+
+
+
+
+
+
+
+            position: relative;
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .matrix-label-y {
+
+
+
+
+
+
+
+            grid-column: 1;
+
+
+
+
+
+
+
+            display: flex;
+
+
+
+
+
+
+
+            flex-direction: column;
+
+
+
+
+
+
+
+            justify-content: space-around;
+
+
+
+
+
+
+
+            font-weight: bold;
+
+
+
+
+
+
+
+            color: var(--text-secondary);
+
+
+
+
+
+
+
+            padding-right: 0.5rem;
+
+
+
+
+
+
+
+            writing-mode: vertical-rl;
+
+
+
+
+
+
+
+            transform: rotate(180deg);
+
+
+
+
+
+
+
+            text-align: center;
+
+
+
+
+
+
+
+            font-size: 0.75rem;
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .matrix-label-x {
+
+
+
+
+
+
+
+            grid-row: 1;
+
+
+
+
+
+
+
+            grid-column: 2 / span 2;
+
+
+
+
+
+
+
+            font-weight: bold;
+
+
+
+
+
+
+
+            color: var(--text-secondary);
+
+
+
+
+
+
+
+            padding-bottom: 0.25rem;
+
+
+
+
+
+
+
+            font-size: 0.75rem;
+
+
+
+
+
+
+
+            text-transform: uppercase;
+
+
+
+
+
+
+
+            letter-spacing: 1px;
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .matrix-header-x1 {
+
+
+
+
+
+
+
+            grid-row: 2;
+
+
+
+
+
+
+
+            grid-column: 2;
+
+
+
+
+
+
+
+            font-size: 0.8rem;
+
+
+
+
+
+
+
+            color: var(--text-muted);
+
+
+
+
+
+
+
+            padding: 0.25rem;
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .matrix-header-x2 {
+
+
+
+
+
+
+
+            grid-row: 2;
+
+
+
+
+
+
+
+            grid-column: 3;
+
+
+
+
+
+
+
+            font-size: 0.8rem;
+
+
+
+
+
+
+
+            color: var(--text-muted);
+
+
+
+
+
+
+
+            padding: 0.25rem;
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .matrix-header-y1 {
+
+
+
+
+
+
+
+            grid-row: 3;
+
+
+
+
+
+
+
+            grid-column: 1;
+
+
+
+
+
+
+
+            font-size: 0.8rem;
+
+
+
+
+
+
+
+            color: var(--text-muted);
+
+
+
+
+
+
+
+            padding: 0.25rem;
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .matrix-header-y2 {
+
+
+
+
+
+
+
+            grid-row: 4;
+
+
+
+
+
+
+
+            grid-column: 1;
+
+
+
+
+
+
+
+            font-size: 0.8rem;
+
+
+
+
+
+
+
+            color: var(--text-muted);
+
+
+
+
+
+
+
+            padding: 0.25rem;
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .matrix-cell {
+
+
+
+
+
+
+
+            padding: 1.5rem 1rem;
+
+
+
+
+
+
+
+            border-radius: 12px;
+
+
+
+
+
+
+
+            display: flex;
+
+
+
+
+
+
+
+            flex-direction: column;
+
+
+
+
+
+
+
+            justify-content: center;
+
+
+
+
+
+
+
+            align-items: center;
+
+
+
+
+
+
+
+            transition: var(--transition);
+
+
+
+
+
+
+
+            border: 1px solid rgba(255, 255, 255, 0.05);
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .matrix-cell .val {
+
+
+
+
+
+
+
+            font-size: 1.5rem;
+
+
+
+
+
+
+
+            font-weight: 800;
+
+
+
+
+
+
+
+            font-family: 'Outfit', sans-serif;
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .matrix-cell .lbl {
+
+
+
+
+
+
+
+            font-size: 0.75rem;
+
+
+
+
+
+
+
+            color: rgba(255, 255, 255, 0.6);
+
+
+
+
+
+
+
+            margin-top: 0.25rem;
+
+
+
+
+
+
+
+            font-weight: 500;
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /* Cell Types Colors */
+
+
+
+
+
+
+
+        .cell-tn {
+
+
+
+
+
+
+
+            background: rgba(16, 185, 129, 0.08);
+
+
+
+
+
+
+
+            color: var(--color-green);
+
+
+
+
+
+
+
+            border-color: rgba(16, 185, 129, 0.2);
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .cell-tp {
+
+
+
+
+
+
+
+            background: rgba(16, 185, 129, 0.18);
+
+
+
+
+
+
+
+            color: var(--color-green);
+
+
+
+
+
+
+
+            border-color: rgba(16, 185, 129, 0.35);
+
+
+
+
+
+
+
+            box-shadow: inset 0 0 10px rgba(16, 185, 129, 0.1);
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .cell-fp {
+
+
+
+
+
+
+
+            background: rgba(239, 68, 68, 0.12);
+
+
+
+
+
+
+
+            color: var(--color-red);
+
+
+
+
+
+
+
+            border-color: rgba(239, 68, 68, 0.25);
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .cell-fn {
+
+
+
+
+
+
+
+            background: rgba(249, 115, 22, 0.15);
+
+
+
+
+
+
+
+            color: var(--color-orange);
+
+
+
+
+
+
+
+            border-color: rgba(249, 115, 22, 0.3);
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .matrix-analysis {
+
+
+
+
+
+
+
+            display: flex;
+
+
+
+
+
+
+
+            flex-direction: column;
+
+
+
+
+
+
+
+            justify-content: space-between;
+
+
+
+
+
+
+
+            background: rgba(8, 11, 17, 0.3);
+
+
+
+
+
+
+
+            border-radius: 12px;
+
+
+
+
+
+
+
+            padding: 1.25rem;
+
+
+
+
+
+
+
+            border: 1px solid var(--border-color);
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .analysis-point {
+
+
+
+
+
+
+
+            margin-bottom: 1rem;
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .analysis-point h4 {
+
+
+
+
+
+
+
+            font-size: 0.95rem;
+
+
+
+
+
+
+
+            font-weight: 600;
+
+
+
+
+
+
+
+            color: var(--text-primary);
+
+
+
+
+
+
+
+            margin-bottom: 0.35rem;
+
+
+
+
+
+
+
+            display: flex;
+
+
+
+
+
+
+
+            align-items: center;
+
+
+
+
+
+
+
+            gap: 0.5rem;
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .analysis-point p {
+
+
+
+
+
+
+
+            font-size: 0.85rem;
+
+
+
+
+
+
+
+            color: var(--text-secondary);
+
+
+
+
+
+
+
+            line-height: 1.4;
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /* Model Configuration Cards */
+
+
+
+
+
+
+
+        .parameter-badge {
+
+
+
+
+
+
+
+            background: rgba(255, 255, 255, 0.05);
+
+
+
+
+
+
+
+            border: 1px solid rgba(255, 255, 255, 0.1);
+
+
+
+
+
+
+
+            border-radius: 8px;
+
+
+
+
+
+
+
+            padding: 0.5rem 0.75rem;
+
+
+
+
+
+
+
+            display: flex;
+
+
+
+
+
+
+
+            justify-content: space-between;
+
+
+
+
+
+
+
+            align-items: center;
+
+
+
+
+
+
+
+            font-size: 0.85rem;
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .parameter-badge span.lbl {
+
+
+
+
+
+
+
+            color: var(--text-secondary);
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .parameter-badge span.val {
+
+
+
+
+
+
+
+            font-weight: 600;
+
+
+
+
+
+
+
+            color: var(--color-cyan);
+
+
+
+
+
+
+
+            font-family: monospace;
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /* Playground / Simulation Panel */
+
+
+
+
+
+
+
+        .simulator-grid {
+
+
+
+
+
+
+
+            display: grid;
+
+
+
+
+
+
+
+            grid-template-columns: 1fr 1fr;
+
+
+
+
+
+
+
+            gap: 2rem;
+
+
+
+
+
+
+
+            margin-top: 1rem;
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .form-group {
+
+
+
+
+
+
+
+            margin-bottom: 1.25rem;
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .form-group label {
+
+
+
+
+
+
+
+            display: flex;
+
+
+
+
+
+
+
+            justify-content: space-between;
+
+
+
+
+
+
+
+            font-size: 0.85rem;
+
+
+
+
+
+
+
+            font-weight: 600;
+
+
+
+
+
+
+
+            margin-bottom: 0.5rem;
+
+
+
+
+
+
+
+            color: var(--text-secondary);
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .form-group label span.val-disp {
+
+
+
+
+
+
+
+            color: var(--color-blue);
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .form-control-range {
+
+
+
+
+
+
+
+            width: 100%;
+
+
+
+
+
+
+
+            height: 6px;
+
+
+
+
+
+
+
+            background: rgba(255, 255, 255, 0.1);
+
+
+
+
+
+
+
+            border-radius: 5px;
+
+
+
+
+
+
+
+            outline: none;
+
+
+
+
+
+
+
+            -webkit-appearance: none;
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .form-control-range::-webkit-slider-thumb {
+
+
+
+
+
+
+
+            -webkit-appearance: none;
+
+
+
+
+
+
+
+            width: 18px;
+
+
+
+
+
+
+
+            height: 18px;
+
+
+
+
+
+
+
+            border-radius: 50%;
+
+
+
+
+
+
+
+            background: var(--color-blue);
+
+
+
+
+
+
+
+            cursor: pointer;
+
+
+
+
+
+
+
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+
+
+
+
+
+
+
+            transition: var(--transition);
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .form-control-range::-webkit-slider-thumb:hover {
+
+
+
+
+
+
+
+            transform: scale(1.2);
+
+
+
+
+
+
+
+            background: var(--color-purple);
+
+
+
+
+
+
+
+            box-shadow: 0 0 10px rgba(168, 85, 247, 0.5);
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .btn {
+
+
+
+
+
+
+
+            background: var(--grad-primary);
+
+
+
+
+
+
+
+            border: none;
+
+
+
+
+
+
+
+            color: white;
+
+
+
+
+
+
+
+            padding: 0.85rem 1.5rem;
+
+
+
+
+
+
+
+            border-radius: 10px;
+
+
+
+
+
+
+
+            font-weight: 600;
+
+
+
+
+
+
+
+            font-size: 0.95rem;
+
+
+
+
+
+
+
+            cursor: pointer;
+
+
+
+
+
+
+
+            transition: var(--transition);
+
+
+
+
+
+
+
+            display: flex;
+
+
+
+
+
+
+
+            align-items: center;
+
+
+
+
+
+
+
+            justify-content: center;
+
+
+
+
+
+
+
+            gap: 0.5rem;
+
+
+
+
+
+
+
+            width: 100%;
+
+
+
+
+
+
+
+            border: 1px solid rgba(255, 255, 255, 0.1);
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .btn:hover {
+
+
+
+
+
+
+
+            transform: translateY(-2px);
+
+
+
+
+
+
+
+            box-shadow: var(--shadow-glow);
+
+
+
+
+
+
+
+            filter: brightness(1.1);
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .simulation-console {
+
+
+
+
+
+
+
+            background: #050811;
+
+
+
+
+
+
+
+            border: 1px solid rgba(59, 130, 246, 0.2);
+
+
+
+
+
+
+
+            border-radius: 12px;
+
+
+
+
+
+
+
+            padding: 1.5rem;
+
+
+
+
+
+
+
+            font-family: monospace;
+
+
+
+
+
+
+
+            font-size: 0.85rem;
+
+
+
+
+
+
+
+            line-height: 1.5;
+
+
+
+
+
+
+
+            display: flex;
+
+
+
+
+
+
+
+            flex-direction: column;
+
+
+
+
+
+
+
+            gap: 0.75rem;
+
+
+
+
+
+
+
+            height: 100%;
+
+
+
+
+
+
+
+            position: relative;
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .console-line {
+
+
+
+
+
+
+
+            display: flex;
+
+
+
+
+
+
+
+            gap: 0.5rem;
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .console-prompt {
+
+
+
+
+
+
+
+            color: var(--color-purple);
+
+
+
+
+
+
+
+            font-weight: bold;
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .console-output {
+
+
+
+
+
+
+
+            color: var(--text-primary);
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .console-success {
+
+
+
+
+
+
+
+            color: var(--color-green);
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .console-danger {
+
+
+
+
+
+
+
+            color: var(--color-red);
+
+
+
+
+
+
+
+            font-weight: bold;
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .console-warning {
+
+
+
+
+
+
+
+            color: var(--color-orange);
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .radar-box {
+
+
+
+
+
+
+
+            position: absolute;
+
+
+
+
+
+
+
+            top: 15px;
+
+
+
+
+
+
+
+            right: 15px;
+
+
+
+
+
+
+
+            display: flex;
+
+
+
+
+
+
+
+            align-items: center;
+
+
+
+
+
+
+
+            gap: 0.5rem;
+
+
+
+
+
+
+
+            background: rgba(239, 68, 68, 0.1);
+
+
+
+
+
+
+
+            border: 1px solid rgba(239, 68, 68, 0.2);
+
+
+
+
+
+
+
+            padding: 0.25rem 0.5rem;
+
+
+
+
+
+
+
+            border-radius: 6px;
+
+
+
+
+
+
+
+            font-size: 0.7rem;
+
+
+
+
+
+
+
+            color: var(--color-red);
+
+
+
+
+
+
+
+            font-weight: bold;
+
+
+
+
+
+
+
+            opacity: 0;
+
+
+
+
+
+
+
+            transition: var(--transition);
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .radar-box.active {
+
+
+
+
+
+
+
+            opacity: 1;
+
+
+
+
+
+
+
+            animation: blink 1s infinite alternate;
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        @keyframes blink {
+
+
+
+
+
+
+
+            from {
+
+
+
+
+
+
+
+                opacity: 0.4;
+
+
+
+
+
+
+
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            to {
+
+
+
+
+
+
+
+                opacity: 1;
+
+
+
+
+
+
+
+            }
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /* Alert Callouts */
+
+
+
+
+
+
+
+        .info-callout {
+
+
+
+
+
+
+
+            background: rgba(59, 130, 246, 0.05);
+
+
+
+
+
+
+
+            border-left: 4px solid var(--color-blue);
+
+
+
+
+
+
+
+            padding: 1rem;
+
+
+
+
+
+
+
+            border-radius: 0 12px 12px 0;
+
+
+
+
+
+
+
+            margin-top: 1rem;
+
+
+
+
+
+
+
+            font-size: 0.85rem;
+
+
+
+
+
+
+
+            color: var(--text-secondary);
+
+
+
+
+
+
+
+            line-height: 1.5;
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .info-callout strong {
+
+
+
+
+
+
+
+            color: var(--text-primary);
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /* Model Comparison Matrix Table */
+
+
+
+
+
+
+
+        .comp-table {
+
+
+
+
+
+
+
+            width: 100%;
+
+
+
+
+
+
+
+            border-collapse: collapse;
+
+
+
+
+
+
+
+            text-align: left;
+
+
+
+
+
+
+
+            font-size: 0.9rem;
+
+
+
+
+
+
+
+            margin-top: 1rem;
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .comp-table th {
+
+
+
+
+
+
+
+            padding: 1rem;
+
+
+
+
+
+
+
+            color: var(--text-secondary);
+
+
+
+
+
+
+
+            font-weight: 600;
+
+
+
+
+
+
+
+            border-bottom: 1px solid var(--border-color);
+
+
+
+
+
+
+
+            background: rgba(8, 11, 17, 0.3);
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .comp-table td {
+
+
+
+
+
+
+
+            padding: 1rem;
+
+
+
+
+
+
+
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+
+
+
+
+
+
+
+            color: var(--text-primary);
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .comp-table tr:hover td {
+
+
+
+
+
+
+
+            background: rgba(255, 255, 255, 0.02);
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .cell-highlight {
+
+
+
+
+
+
+
+            font-weight: bold;
+
+
+
+
+
+
+
+            font-family: 'Outfit', sans-serif;
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .badge-model {
+
+
+
+
+
+
+
+            padding: 0.25rem 0.5rem;
+
+
+
+
+
+
+
+            border-radius: 6px;
+
+
+
+
+
+
+
+            font-size: 0.75rem;
+
+
+
+
+
+
+
+            font-weight: bold;
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .bm-ae {
+
+
+
+
+
+
+
+            background: rgba(6, 182, 212, 0.15);
+
+
+
+
+
+
+
+            color: var(--color-cyan);
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .bm-lstm {
+
+
+
+
+
+
+
+            background: rgba(59, 130, 246, 0.15);
+
+
+
+
+
+
+
+            color: var(--color-blue);
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .bm-cnn {
+
+
+
+
+
+
+
+            background: rgba(168, 85, 247, 0.15);
+
+
+
+
+
+
+
+            color: var(--color-purple);
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .bm-hyb {
+
+
+
+
+
+
+
+            background: rgba(249, 115, 22, 0.15);
+
+
+
+
+
+
+
+            color: var(--color-orange);
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .hidden {
+
+
+
+
+
+
+
+            display: none !important;
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+    </style>
+
+
+
+
+
+
+
+</head>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="app-container">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <!-- Sidebar Navigation -->
+
+
+
+
+
+
+
+        <aside class="sidebar">
+
+
+
+
+
+
+
+            <div class="brand">
+
+
+
+
+
+
+
+                <i class="fa-solid fa-shield-halved"></i>
+
+
+
+
+
+
+
+                <span>ANOMALY DETECT</span>
+
+
+
+
+
+
+
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <ul class="nav-menu">
+
+
+
+
+
+
+
+                <li class="nav-item active" onclick="switchSection('dashboard', this)">
+
+
+
+
+
+
+
+                    <i class="fa-solid fa-chart-line"></i>
+
+
+
+
+
+
+
+                    <span>Dashboard</span>
+
+
+
+
+
+
+
+                </li>
+
+
+
+
+
+
+
+                <li class="nav-item" onclick="switchSection('models', this)">
+
+
+
+
+
+
+
+                    <i class="fa-solid fa-microchip"></i>
+
+
+
+
+
+
+
+                    <span>Model Detayları</span>
+
+
+
+
+
+
+
+                </li>
+
+
+
+
+
+
+
+                <li class="nav-item" onclick="switchSection('playground', this)">
+
+
+
+
+
+
+
+                    <i class="fa-solid fa-terminal"></i>
+
+
+
+
+
+
+
+                    <span>Simülatör & Test</span>
+
+
+
+
+
+
+
+                </li>
+
+
+
+
+
+
+
+            </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <div class="sidebar-footer">
+
+
+
+
+
+
+
+                <div class="project-badge">Active: lstm</div>
+
+
+
+
+
+
+
+                <p>Proje: Encrypted Traffic Anomaly Detection</p>
+
+
+
+
+
+
+
+                <p><i class="fa-solid fa-code-branch"></i> Git Branch: lstm</p>
+
+
+
+
+
+
+
+            </div>
+
+
+
+
+
+
+
+        </aside>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <!-- Main Window -->
+
+
+
+
+
+
+
+        <main class="main-content">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <!-- Dashboard Section -->
+
+
+
+
+
+
+
+            <div id="section-dashboard">
+
+
+
+
+
+
+
+                <header>
+
+
+
+
+
+
+
+                    <div class="header-title">
+
+
+
+
+
+
+
+                        <h2>Model Karşılaştırma Dashboard</h2>
+
+
+
+                        <p>Dengeli veri setinde eğitilen Autoencoder, LSTM, CNN ve Hibrit modellerin karşılaştırmalı performans metrikleri.</p>
+
+
+
+                    </div>
+
+
+
+                    <div class="status-badge-container">
+
+
+
+                        <div class="status-card">
+
+
+
+                            <div class="status-dot"></div>
+
+
+
+                            <span>En İyi Model: Hibrit Model (AE + LSTM)</span>
+
+
+
+                        </div>
+
+
+
+                    </div>
+
+
+
+
+
+
+
+                </header>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                <!-- Cards Grid -->
+
+
+
+
+
+
+
+                <div class="dashboard-grid">
+
+
+
+
+
+
+
+                    <div class="card accent-blue">
+
+
+
+    <div class="card-stat">
+
+
+
+        <div class="card-stat-header">
+
+
+
+            <span>En Yüksek Doğruluk (Accuracy)</span>
+
+
+
+            <div class="card-stat-icon"><i class="fa-solid fa-bullseye"></i></div>
+
+
+
+        </div>
+
+
+
+        <div class="card-stat-value">98.77%</div>
+
+
+
+        <div class="card-stat-footer">
+
+
+
+            <span>Hibrit Model (AE + LSTM)</span>
+
+
+
+        </div>
+
+
+
+    </div>
+
+
+
+</div>
+
+
+
+<div class="card accent-purple">
+
+
+
+    <div class="card-stat">
+
+
+
+        <div class="card-stat-header">
+
+
+
+            <span>En Yüksek Saldırı Yakalama (Recall)</span>
+
+
+
+            <div class="card-stat-icon"><i class="fa-solid fa-eye"></i></div>
+
+
+
+        </div>
+
+
+
+        <div class="card-stat-value">96.07%</div>
+
+
+
+        <div class="card-stat-footer up">
+
+
+
+            <i class="fa-solid fa-caret-up"></i>
+
+
+
+            <span>CNN + ROC Modeli</span>
+
+
+
+        </div>
+
+
+
+    </div>
+
+
+
+</div>
+
+
+
+<div class="card accent-green">
+
+
+
+    <div class="card-stat">
+
+
+
+        <div class="card-stat-header">
+
+
+
+            <span>Optimal Saldırı Yakalama</span>
+
+
+
+            <div class="card-stat-icon"><i class="fa-solid fa-scale-balanced"></i></div>
+
+
+
+        </div>
+
+
+
+        <div class="card-stat-value">90.18%</div>
+
+
+
+        <div class="card-stat-footer">
+
+
+
+            <span>Hibrit Model (Dengeli)</span>
+
+
+
+        </div>
+
+
+
+    </div>
+
+
+
+</div>
+
+
+
+<div class="card accent-danger">
+
+
+
+    <div class="card-stat">
+
+
+
+        <div class="card-stat-header">
+
+
+
+            <span>Düşük False Positive Oranı</span>
+
+
+
+            <div class="card-stat-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+
+
+
+        </div>
+
+
+
+        <div class="card-stat-value">0.31%</div>
+
+
+
+        <div class="card-stat-footer">
+
+
+
+            <span>Hibrit Model (Sadece 887 sahte alarm!)</span>
+
+
+
+        </div>
+
+
+
+    </div>
+
+
+
+</div>
+
+
+
+
+
+
+
+                </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                <!-- Graphs and Analysis -->
+
+
+
+
+
+
+
+                <div class="two-col-grid">
+
+
+
+
+
+
+
+                    <div class="card">
+
+
+
+
+
+
+
+                        <div class="section-header">
+
+
+
+
+
+
+
+                            <div class="section-title">
+
+
+
+
+
+
+
+                                <i class="fa-solid fa-chart-bar"></i>
+
+
+
+
+
+
+
+                                <span>Saldırı Sınıfı (Anomali) Performans Karşılaştırması</span>
+
+
+
+
+
+
+
+                            </div>
+
+
+
+
+
+
+
+                        </div>
+
+
+
+
+
+
+
+                        <div style="height: 350px; position: relative;">
+
+
+
+
+
+
+
+                            <canvas id="barCompareChart"></canvas>
+
+
+
+
+
+
+
+                        </div>
+
+
+
+
+
+
+
+                    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    <div class="card">
+
+
+
+
+
+
+
+                        <div class="section-header">
+
+
+
+
+
+
+
+                            <div class="section-title">
+
+
+
+
+
+
+
+                                <i class="fa-solid fa-list-check"></i>
+
+
+
+
+
+
+
+                                <span>Özet Çıkarımlar</span>
+
+
+
+
+
+
+
+                            </div>
+
+
+
+
+
+
+
+                        </div>
+
+
+
+
+
+
+
+                        <div class="matrix-analysis" style="height: 350px; justify-content: space-around;">
+                            <div class="analysis-point">
+                                <h4><i class="fa-solid fa-circle-exclamation" style="color: var(--color-red);"></i>
+                                    Şifreli Trafik Sınıf Dengelenmesi</h4>
+                                <p>Eğitim kümesinde uygulanan 50/50 under-sampling sayesinde, LSTM modelimiz anomali kaçırma körlüğünden kurtulmuş, Recall skorunu %94.67'ye taşımış ve anomali hassasiyetini (Precision) %75.00 seviyesine yükseltmiştir.</p>
+                            </div>
+                            <div class="analysis-point">
+                                <h4><i class="fa-solid fa-shield-virus" style="color: var(--color-green);"></i>
+                                    CNN + ROC Matematiksel Eşik Optimizasyonu</h4>
+                                <p>CNN modelimizde Youden İndeksi kullanılarak optimum karar eşiği (0.4881) belirlenmiştir. Bu sayede %96.07 recall ve %95.97 genel doğruluk dengesi kurulmuştur.</p>
+                            </div>
+                            <div class="analysis-point">
+                                <h4><i class="fa-solid fa-wave-square" style="color: var(--color-cyan);"></i>
+                                    Hibrit (AE + LSTM) Üretim Modeli</h4>
+                                <p>Aşamalı yapıda Autoencoder filtresi (Eşik: 0.000918) sayesinde False Positive oranı rekor seviyede düşürülmüştür (%0.31). Eşiği aşan şüpheli paketler LSTM tarafından sorgulanarak %90.18 Recall ve %97.00 Precision ile yakalanmaktadır.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Confusion Matrix Panel -->
+
+
+
+
+
+
+
+                <div class="card">
+
+
+
+
+
+
+
+                    <div class="section-header">
+
+
+
+
+
+
+
+                        <div class="section-title">
+
+
+
+
+
+
+
+                            <i class="fa-solid fa-table-cells"></i>
+
+
+
+
+
+
+
+                            <span>Karmaşıklık Matrisi & Siber Analiz Raporu</span>
+
+
+
+
+
+
+
+                        </div>
+
+
+
+
+
+
+
+                        <div class="tabs-header">
+
+
+
+
+
+
+
+                                <button class="tab-btn active" onclick="switchMatrix('ae', this)">Autoencoder</button>
+
+
+
+
+
+
+
+                                <button class="tab-btn" onclick="switchMatrix('lstm1', this)">LSTM (Dengeli)</button>
+
+
+
+
+
+
+
+                                <button class="tab-btn" onclick="switchMatrix('lstm2', this)">CNN + ROC</button>
+
+
+
+
+
+
+
+                                <button class="tab-btn" onclick="switchMatrix('lstm3', this)">Hibrit Model</button>
+
+
+
+
+
+
+
+                            </div>
+
+
+
+
+
+
+
+                    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    <!-- Autoencoder Matrix -->
+
+
+
+
+
+
+
+                    <div id="matrix-ae" class="matrix-container">
+
+
+
+
+
+
+
+                        <div class="confusion-matrix-grid">
+
+
+
+
+
+
+
+                            <div class="matrix-label-y">GERÇEK SINIF</div>
+
+
+
+
+
+
+
+                            <div class="matrix-label-x">TAHMİN EDİLEN SINIF</div>
+
+
+
+
+
+
+
+                            <div class="matrix-header-x1">NORMAL</div>
+
+
+
+
+
+
+
+                            <div class="matrix-header-x2">SALDIRI</div>
+
+
+
+
+
+
+
+                            <div class="matrix-header-y1">NORMAL</div>
+
+
+
+
+
+
+
+                            <div class="matrix-header-y2">SALDIRI</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            <div class="matrix-cell cell-tn" style="grid-row: 3; grid-column: 2;">
+
+
+
+    <span class="val">287,297</span>
+
+
+
+    <span class="lbl">True Negative (TN)</span>
+
+
+
+</div>
+
+
+
+<div class="matrix-cell cell-fp" style="grid-row: 3; grid-column: 3;">
+
+
+
+    <span class="val">2,846</span>
+
+
+
+    <span class="lbl">False Positive (FP)</span>
+
+
+
+</div>
+
+
+
+<div class="matrix-cell cell-fn" style="grid-row: 4; grid-column: 2;">
+
+
+
+    <span class="val">31,321</span>
+
+
+
+    <span class="lbl">False Negative (FN)</span>
+
+
+
+</div>
+
+
+
+<div class="matrix-cell cell-tp" style="grid-row: 4; grid-column: 3;">
+
+
+
+    <span class="val">28</span>
+
+
+
+    <span class="lbl">True Positive (TP)</span>
+
+
+
+</div>
+
+
+
+</div>
+
+
+
+<div class="matrix-analysis">
+
+
+
+<div class="analysis-point">
+
+
+
+    <h4><i class="fa-solid fa-circle-info" style="color: var(--color-cyan);"></i> Karar Eşik Mekanizması</h4>
+
+
+
+    <p>Normal veri setindeki MAE yeniden inşa hatalarının <strong>%99 persentili</strong> olan <strong>0.080305</strong> anomali eşik değeri olarak belirlenmiştir. Hatanın bu değerden yüksek olduğu durumlar anomali (saldırı) olarak işaretlenir.</p>
+
+
+
+</div>
+
+
+
+<div class="analysis-point">
+
+
+
+    <h4><i class="fa-solid fa-triangle-exclamation" style="color: var(--color-orange);"></i> Siber Analist Notu</h4>
+
+
+
+    <p>Model normal trafiği %99 doğru tanısa da (TN: 287,297), sinsi sızma ve brute-force saldırılarının neredeyse tamamını kaçırmış ve sadece 28 saldırı yakalayabilmiştir (%0.09 recall). Tek başına anomali tespiti için yetersizdir.</p>
+
+
+
+</div>
+
+
+
+
+
+
+
+                        </div>
+
+
+
+
+
+
+
+                    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    <!-- LSTM v1 Matrix -->
+
+
+
+
+
+
+
+                    <div id="matrix-lstm1" class="matrix-container hidden">
+
+
+
+
+
+
+
+    <div class="confusion-matrix-grid">
+
+
+
+
+
+
+
+        <div class="matrix-label-y">GERÇEK SINIF</div>
+
+
+
+
+
+
+
+        <div class="matrix-label-x">TAHMİN EDİLEN SINIF</div>
+
+
+
+
+
+
+
+        <div class="matrix-header-x1">NORMAL</div>
+
+
+
+
+
+
+
+        <div class="matrix-header-x2">SALDIRI</div>
+
+
+
+
+
+
+
+        <div class="matrix-header-y1">NORMAL</div>
+
+
+
+
+
+
+
+        <div class="matrix-header-y2">SALDIRI</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <div class="matrix-cell cell-tn" style="grid-row: 3; grid-column: 2;">
+
+
+
+    <span class="val">280,199</span>
+
+
+
+    <span class="lbl">True Negative (TN)</span>
+
+
+
+</div>
+
+
+
+<div class="matrix-cell cell-fp" style="grid-row: 3; grid-column: 3;">
+
+
+
+    <span class="val">9,944</span>
+
+
+
+    <span class="lbl">False Positive (FP)</span>
+
+
+
+</div>
+
+
+
+<div class="matrix-cell cell-fn" style="grid-row: 4; grid-column: 2;">
+
+
+
+    <span class="val">1,670</span>
+
+
+
+    <span class="lbl">False Negative (FN)</span>
+
+
+
+</div>
+
+
+
+<div class="matrix-cell cell-tp" style="grid-row: 4; grid-column: 3;">
+
+
+
+    <span class="val">29,679</span>
+
+
+
+    <span class="lbl">True Positive (TP)</span>
+
+
+
+</div>
+
+
+
+</div>
+
+
+
+<div class="matrix-analysis">
+
+
+
+<div class="analysis-point">
+
+
+
+    <h4><i class="fa-solid fa-circle-exclamation" style="color: var(--color-blue);"></i> Dengeli Sınıf Eğitimi</h4>
+
+
+
+    <p>Eğitim kümesinde benign ve anomali sınıfları eşitlenmiştir (146,294'er örnek). Bu dengeleme sayesinde model siber saldırıları kaçırma körlüğünden kurtulmuştur.</p>
+
+
+
+</div>
+
+
+
+<div class="analysis-point">
+
+
+
+    <h4><i class="fa-solid fa-bug" style="color: var(--color-orange);"></i> Kararlı Yüksek Performans</h4>
+
+
+
+    <p>Saldırıların %94.67'sini başarıyla yakalamış (31,349 ataktan 29,679'u). SSH eklenmesiyle anomali çeşitliliği arttığı için sahte alarm oranı düşmüş ve hassasiyet %75.00'e yükselmiştir.</p>
+
+
+
+</div>
+
+
+
+
+
+
+
+    </div>
+
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    <!-- LSTM v2 Matrix -->
+
+
+
+
+
+
+
+                    <div id="matrix-lstm2" class="matrix-container hidden">
+
+
+
+
+
+
+
+    <div class="confusion-matrix-grid">
+
+
+
+
+
+
+
+        <div class="matrix-label-y">GERÇEK SINIF</div>
+
+
+
+
+
+
+
+        <div class="matrix-label-x">TAHMİN EDİLEN SINIF</div>
+
+
+
+
+
+
+
+        <div class="matrix-header-x1">NORMAL</div>
+
+
+
+
+
+
+
+        <div class="matrix-header-x2">SALDIRI</div>
+
+
+
+
+
+
+
+        <div class="matrix-header-y1">NORMAL</div>
+
+
+
+
+
+
+
+        <div class="matrix-header-y2">SALDIRI</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <div class="matrix-cell cell-tn" style="grid-row: 3; grid-column: 2;">
+
+
+
+    <span class="val">278,431</span>
+
+
+
+    <span class="lbl">True Negative (TN)</span>
+
+
+
+</div>
+
+
+
+<div class="matrix-cell cell-fp" style="grid-row: 3; grid-column: 3;">
+
+
+
+    <span class="val">11,712</span>
+
+
+
+    <span class="lbl">False Positive (FP)</span>
+
+
+
+</div>
+
+
+
+<div class="matrix-cell cell-fn" style="grid-row: 4; grid-column: 2;">
+
+
+
+    <span class="val">1,233</span>
+
+
+
+    <span class="lbl">False Negative (FN)</span>
+
+
+
+</div>
+
+
+
+<div class="matrix-cell cell-tp" style="grid-row: 4; grid-column: 3;">
+
+
+
+    <span class="val">30,116</span>
+
+
+
+    <span class="lbl">True Positive (TP)</span>
+
+
+
+</div>
+
+
+
+</div>
+
+
+
+<div class="matrix-analysis">
+
+
+
+<div class="analysis-point">
+
+
+
+    <h4><i class="fa-solid fa-shield-virus" style="color: var(--color-purple);"></i> CNN + ROC Optimizasyonu</h4>
+
+
+
+    <p>1D CNN modeli dengeli veri setiyle eğitilmiş ve karar sınırı validation kümesi üzerinde ROC eğrisinden elde edilen optimum Youden eşiğine (0.4881) göre ayarlanmıştır.</p>
+
+
+
+</div>
+
+
+
+<div class="analysis-point">
+
+
+
+    <h4><i class="fa-solid fa-bell-slash" style="color: var(--color-orange);"></i> Maksimum Saldırı Yakalama</h4>
+
+
+
+    <p>%96.07 Recall seviyesi ile en çok saldırı yakalayan standalone modeldir (30,116 / 31,349). Ancak 11,712 adet sahte alarm üretmektedir.</p>
+
+
+
+</div>
+
+
+
+
+
+
+
+    </div>
+
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    <!-- LSTM v3 Matrix -->
+
+
+
+
+
+
+
+                    <div id="matrix-lstm3" class="matrix-container hidden">
+
+
+
+
+
+
+
+    <div class="confusion-matrix-grid">
+
+
+
+
+
+
+
+        <div class="matrix-label-y">GERÇEK SINIF</div>
+
+
+
+
+
+
+
+        <div class="matrix-label-x">TAHMİN EDİLEN SINIF</div>
+
+
+
+
+
+
+
+        <div class="matrix-header-x1">NORMAL</div>
+
+
+
+
+
+
+
+        <div class="matrix-header-x2">SALDIRI</div>
+
+
+
+
+
+
+
+        <div class="matrix-header-y1">NORMAL</div>
+
+
+
+
+
+
+
+        <div class="matrix-header-y2">SALDIRI</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <div class="matrix-cell cell-tn" style="grid-row: 3; grid-column: 2;">
+
+
+
+    <span class="val">289,256</span>
+
+
+
+    <span class="lbl">True Negative (TN)</span>
+
+
+
+</div>
+
+
+
+<div class="matrix-cell cell-fp" style="grid-row: 3; grid-column: 3;">
+
+
+
+    <span class="val">887</span>
+
+
+
+    <span class="lbl">False Positive (FP)</span>
+
+
+
+</div>
+
+
+
+<div class="matrix-cell cell-fn" style="grid-row: 4; grid-column: 2;">
+
+
+
+    <span class="val">3,080</span>
+
+
+
+    <span class="lbl">False Negative (FN)</span>
+
+
+
+</div>
+
+
+
+<div class="matrix-cell cell-tp" style="grid-row: 4; grid-column: 3;">
+
+
+
+    <span class="val">28,269</span>
+
+
+
+    <span class="lbl">True Positive (TP)</span>
+
+
+
+</div>
+
+
+
+</div>
+
+
+
+<div class="matrix-analysis">
+
+
+
+<div class="analysis-point">
+
+
+
+    <h4><i class="fa-solid fa-scale-balanced" style="color: var(--color-green);"></i> Aşamalı Eleme (AE + LSTM)</h4>
+
+
+
+    <p>Sistem önce Autoencoder'dan geçer. Hata eşiğin (0.000918) altındaysa normal kabul edilerek elenir, üstündeyse LSTM tarafından ikinci bir sorguya alınarak nihai karar verilir.</p>
+
+
+
+</div>
+
+
+
+<div class="analysis-point">
+
+
+
+    <h4><i class="fa-solid fa-square-check" style="color: var(--color-green);"></i> Ultra Düşük Sahte Alarm Oranı</h4>
+
+
+
+    <p>False Positive sayısını 887'ye indirerek sahte alarm oranını %0.31'e düşürmüştür. Saldırıların %90.18'ini (28,269 / 31,349) yakalamayı başarmış ve F1-skorunu %93.44 seviyesine taşımıştır. Üretim ortamı için en uygun modeldir.</p>
+
+
+
+</div>
+
+
+
+
+
+
+
+    </div>
+
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+                </div>
+
+
+
+
+
+
+
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <!-- Model Details Section -->
+
+
+
+
+
+
+
+            <div id="section-models" class="hidden">
+
+
+
+
+
+
+
+                <header>
+
+
+
+
+
+
+
+                    <div class="header-title">
+
+
+
+
+
+
+
+                        <h2>Model Hiperparametreleri & Kod Yapıları</h2>
+
+
+
+
+
+
+
+                        <p>Autoencoder ve LSTM yapılarının teknik parametreleri ve katman mimarileri.</p>
+
+
+
+
+
+
+
+                    </div>
+
+
+
+
+
+
+
+                </header>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                <div class="equal-grid">
+
+
+
+
+
+
+
+                    <div class="card">
+
+
+
+
+
+
+
+                        <div class="section-header">
+
+
+
+
+
+
+
+                            <div class="section-title">
+
+
+
+
+
+
+
+                                <i class="fa-solid fa-diagram-project" style="color: var(--color-cyan);"></i>
+
+
+
+
+
+
+
+                                <span>Autoencoder (AE) Mimarisi</span>
+
+
+
+
+
+
+
+                            </div>
+
+
+
+
+
+
+
+                        </div>
+
+
+
+
+
+
+
+                        <div style="display: flex; flex-direction: column; gap: 0.8rem;">
+
+
+
+
+
+
+
+                            <div class="parameter-badge">
+
+
+
+
+
+
+
+                                <span class="lbl">Model Sınıfı</span>
+
+
+
+
+
+
+
+                                <span class="val" style="color: var(--color-cyan);">Autoencoder</span>
+
+
+
+
+
+
+
+                            </div>
+
+
+
+
+
+
+
+                            <div class="parameter-badge">
+
+
+
+
+
+
+
+                                <span class="lbl">Encoder Katmanları (Linear)</span>
+
+
+
+
+
+
+
+                                <span class="val">Input_Dim -> 16 -> 8 -> 4 (Bottleneck)</span>
+
+
+
+
+
+
+
+                            </div>
+
+
+
+
+
+
+
+                            <div class="parameter-badge">
+
+
+
+
+
+
+
+                                <span class="lbl">Decoder Katmanları (Linear)</span>
+
+
+
+
+
+
+
+                                <span class="val">4 -> 8 -> 16 -> Input_Dim</span>
+
+
+
+
+
+
+
+                            </div>
+
+
+
+
+
+
+
+                            <div class="parameter-badge">
+
+
+
+
+
+
+
+                                <span class="lbl">Hata Fonksiyonu (Metric)</span>
+
+
+
+
+
+
+
+                                <span class="val">MAE (Mean Absolute Error)</span>
+
+
+
+
+
+
+
+                            </div>
+
+
+
+
+
+
+
+                            <div class="parameter-badge">
+
+
+
+
+
+
+
+                                <span class="lbl">Optimizasyon & Öğrenme Oranı</span>
+
+
+
+
+
+
+
+                                <span class="val">Adam (lr=0.001)</span>
+
+
+
+
+
+
+
+                            </div>
+
+
+
+
+
+
+
+                            <div class="parameter-badge">
+
+
+
+
+
+
+
+                                <span class="lbl">Batch Size / Epochs</span>
+
+
+
+
+
+
+
+                                <span class="val">2048 / 100 Epochs (Max)</span>
+
+
+
+
+
+
+
+                            </div>
+
+
+
+
+
+
+
+                            <div class="parameter-badge">
+
+
+
+
+
+
+
+                                <span class="lbl">Erken Durdurma (Patience)</span>
+
+
+
+
+
+
+
+                                <span class="val">5 Epochs</span>
+
+
+
+
+
+
+
+                            </div>
+
+
+
+
+
+
+
+                            <div class="parameter-badge">
+
+
+
+    <span class="lbl">Anomali Eşik Değeri</span>
+
+
+
+    <span class="val">0.080305</span>
+
+
+
+</div>
+
+
+
+
+
+
+
+                        </div>
+
+
+
+
+
+
+
+                        <div class="info-callout">
+
+
+
+
+
+
+
+                            <strong>Mühendislik Kararı:</strong> Autoencoder, anomali tespitinde sadece <strong>Normal (Benign)</strong> veri ile eğitilmiştir. Bu sayede model yalnızca normal trafiğin kalıplarını öğrenir ve bir saldırı (anomali) ile karşılaştığında yeniden inşa hatası (MAE) tavan yapar.
+
+
+
+
+
+
+
+                        </div>
+
+
+
+
+
+
+
+                    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    <div class="card">
+
+
+
+
+
+
+
+                        <div class="section-header">
+
+
+
+
+
+
+
+                            <div class="section-title">
+
+
+
+
+
+
+
+                                <i class="fa-solid fa-network-wired" style="color: var(--color-blue);"></i>
+
+
+
+
+
+
+
+                                <span>Traffic LSTM Mimarisi</span>
+
+
+
+
+
+
+
+                            </div>
+
+
+
+
+
+
+
+                        </div>
+
+
+
+
+
+
+
+                        <div style="display: flex; flex-direction: column; gap: 0.8rem;">
+
+
+
+
+
+
+
+                            <div class="parameter-badge">
+
+
+
+
+
+
+
+                                <span class="lbl">Model Sınıfı</span>
+
+
+
+
+
+
+
+                                <span class="val" style="color: var(--color-blue);">TrafficLSTM</span>
+
+
+
+
+
+
+
+                            </div>
+
+
+
+
+
+
+
+                            <div class="parameter-badge">
+
+
+
+
+
+
+
+                                <span class="lbl">Girdi Boyutu (Input Dimension)</span>
+
+
+
+
+
+
+
+                                <span class="val">Özellik Sayısı (Dynamic)</span>
+
+
+
+
+
+
+
+                            </div>
+
+
+
+
+
+
+
+                            <div class="parameter-badge">
+
+
+
+
+
+
+
+                                <span class="lbl">Gizli Durum Boyutu (Hidden Dimension)</span>
+
+
+
+
+
+
+
+                                <span class="val">64 Hücre</span>
+
+
+
+
+
+
+
+                            </div>
+
+
+
+
+
+
+
+                            <div class="parameter-badge">
+
+
+
+
+
+
+
+                                <span class="lbl">LSTM Katman Sayısı</span>
+
+
+
+
+
+
+
+                                <span class="val">2 Katman (Stacked)</span>
+
+
+
+
+
+
+
+                            </div>
+
+
+
+
+
+
+
+                            <div class="parameter-badge">
+
+
+
+
+
+
+
+                                <span class="lbl">Optimizasyon & Öğrenme Oranı</span>
+
+
+
+
+
+
+
+                                <span class="val">Adam (lr=0.001)</span>
+
+
+
+
+
+
+
+                            </div>
+
+
+
+
+
+
+
+                            <div class="parameter-badge">
+
+
+
+
+
+
+
+                                <span class="lbl">Batch Size / Max Epochs</span>
+
+
+
+
+
+
+
+                                <span class="val">2048 / 50 Epochs</span>
+
+
+
+
+
+
+
+                            </div>
+
+
+
+
+
+
+
+                            <div class="parameter-badge">
+
+
+
+
+
+
+
+                                <span class="lbl">Kayıp Fonksiyonu</span>
+
+
+
+
+
+
+
+                                <span class="val">CrossEntropyLoss()</span>
+
+
+
+
+
+
+
+                            </div>
+
+
+
+
+
+
+
+                            <div class="parameter-badge">
+
+
+
+
+
+
+
+                                <span class="lbl">Zaman Adımı Şekillendirme</span>
+
+
+
+
+
+
+
+                                <span class="val">1 (Expand dims along axis=1)</span>
+
+
+
+
+
+
+
+                            </div>
+
+
+
+
+
+
+
+                        </div>
+
+
+
+
+
+
+
+                        <div class="info-callout">
+
+
+
+
+
+
+
+                            <strong>Mühendislik Kararı:</strong> LSTM hücreleri veriyi 3D formatta `[Batch, Time_Steps,
+
+
+
+
+
+
+
+                            Feature_Dim]` ister. Bu projede, veriler doğrudan paket tabanlı kesitler olduğundan zaman
+
+
+
+
+
+
+
+                            adımı `1` alınarak veri formatı modele uygun hale getirilmiştir.
+
+
+
+
+
+
+
+                        </div>
+
+
+
+
+
+
+
+                    </div>
+
+
+
+
+
+
+
+                </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                <!-- Comprehensive Comparison Matrix Table -->
+
+
+
+
+
+
+
+                <div class="card">
+
+
+
+
+
+
+
+                    <div class="section-header">
+
+
+
+
+
+
+
+                        <div class="section-title">
+
+
+
+
+
+
+
+                            <i class="fa-solid fa-list-ol"></i>
+
+
+
+
+
+
+
+                            <span>Detaylı Metrik Matrisi</span>
+
+
+
+
+
+
+
+                        </div>
+
+
+
+
+
+
+
+                    </div>
+
+
+
+
+
+
+
+                    <table class="comp-table">
+
+
+
+
+
+
+
+                        <thead>
+
+
+
+
+
+
+
+                            <tr>
+
+
+
+
+
+
+
+                                <th>Model Versiyonu</th>
+
+
+
+
+
+
+
+                                <th>Genel Doğruluk (Acc)</th>
+
+
+
+
+
+
+
+                                <th>Saldırı Precision</th>
+
+
+
+
+
+
+
+                                <th>Saldırı Recall</th>
+
+
+
+
+
+
+
+                                <th>Saldırı F1-Score</th>
+
+
+
+
+
+
+
+                                <th>Yanlış Alarmlar (FP)</th>
+
+
+
+
+
+
+
+                                <th>Doğru Yakalanan (TP)</th>
+
+
+
+
+
+
+
+                            </tr>
+
+
+
+
+
+
+
+                        </thead>
+
+
+
+
+
+
+
+                        <tbody>
+    <tr>
+        <td><span class="badge-model bm-ae">Autoencoder</span></td>
+        <td class="cell-highlight">89.37%</td>
+        <td>0.97%</td>
+        <td>0.09%</td>
+        <td>0.17%</td>
+        <td style="color: var(--color-orange);">2,846</td>
+        <td>28 / 31,349</td>
+    </tr>
+    <tr>
+        <td><span class="badge-model bm-lstm">LSTM (Dengeli)</span></td>
+        <td class="cell-highlight">96.39%</td>
+        <td>74.90%</td>
+        <td style="color: var(--color-green); font-weight: bold;">94.67%</td>
+        <td>83.63%</td>
+        <td style="color: var(--color-red); font-weight: bold;">9,944</td>
+        <td>29,679 / 31,349</td>
+    </tr>
+    <tr>
+        <td><span class="badge-model bm-cnn">CNN + ROC</span></td>
+        <td class="cell-highlight">95.97%</td>
+        <td>71.99%</td>
+        <td style="color: var(--color-purple); font-weight: bold;">96.07%</td>
+        <td>82.29%</td>
+        <td style="color: var(--color-orange);">11,712</td>
+        <td>30,116 / 31,349</td>
+    </tr>
+    <tr style="background: rgba(16, 185, 129, 0.05); border-left: 3px solid var(--color-green);">
+        <td><span class="badge-model bm-hyb">Hibrit Model</span> <span style="font-size:0.7rem; color:var(--color-green); font-weight:bold;">ÖNERİLEN</span></td>
+        <td class="cell-highlight" style="color: var(--color-green);">98.77%</td>
+        <td style="color: var(--color-green); font-weight: bold;">96.96%</td>
+        <td>90.18%</td>
+        <td style="color: var(--color-green); font-weight: bold;">93.44%</td>
+        <td style="color: var(--color-green); font-weight: bold;">887</td>
+        <td style="color: var(--color-green); font-weight: bold;">28,269 / 31,349</td>
+    </tr>
+</tbody>
+
+
+
+
+
+
+
+                    </table>
+
+
+
+
+
+
+
+                </div>
+
+
+
+
+
+
+
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <!-- Playground & Simulator Section -->
+
+
+
+
+
+
+
+            <div id="section-playground" class="hidden">
+
+
+
+
+
+
+
+                <header>
+
+
+
+
+
+
+
+                    <div class="header-title">
+
+
+
+
+
+
+
+                        <h2>Siber Saldırı Algılama Simülatörü</h2>
+
+
+
+
+
+
+
+                        <p>Gerçek zamanlı ağ trafiği paket özellikleri belirleyerek modellerin anomali üretme
+
+
+
+
+
+
+
+                            kararlarını test edin.</p>
+
+
+
+
+
+
+
+                    </div>
+
+
+
+
+
+
+
+                </header>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                <div class="card">
+
+
+
+
+
+
+
+                    <div class="simulator-grid">
+
+
+
+
+
+
+
+                        <!-- Controls -->
+
+
+
+
+
+
+
+                        <div>
+
+
+
+
+
+
+
+                            <div class="section-title" style="margin-bottom: 1.5rem;">
+
+
+
+
+
+
+
+                                <i class="fa-solid fa-sliders"></i> Paket Trafik Parametreleri
+
+
+
+
+
+
+
+                            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            <div class="form-group">
+
+
+
+
+
+
+
+                                <label for="param-pktsize">Paket Boyutu (Bytes): <span id="val-pktsize"
+
+
+
+
+
+
+
+                                        class="val-disp">128 B</span></label>
+
+
+
+
+
+
+
+                                <input type="range" id="param-pktsize" min="40" max="1500" value="128"
+
+
+
+
+
+
+
+                                    class="form-control-range" oninput="updateDisp('pktsize', this.value + ' B')">
+
+
+
+
+
+
+
+                            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            <div class="form-group">
+
+
+
+
+
+
+
+                                <label for="param-duration">Akış Süresi (Flow Duration - ms): <span id="val-duration"
+
+
+
+
+
+
+
+                                        class="val-disp">50 ms</span></label>
+
+
+
+
+
+
+
+                                <input type="range" id="param-duration" min="1" max="10000" value="50"
+
+
+
+
+
+
+
+                                    class="form-control-range" oninput="updateDisp('duration', this.value + ' ms')">
+
+
+
+
+
+
+
+                            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            <div class="form-group">
+
+
+
+
+
+
+
+                                <label for="param-iat">Paketler Arası Varış Süresi (IAT - ms): <span id="val-iat"
+
+
+
+
+
+
+
+                                        class="val-disp">10 ms</span></label>
+
+
+
+
+
+
+
+                                <input type="range" id="param-iat" min="1" max="500" value="10"
+
+
+
+
+
+
+
+                                    class="form-control-range" oninput="updateDisp('iat', this.value + ' ms')">
+
+
+
+
+
+
+
+                            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            <div class="form-group">
+
+
+
+
+
+
+
+                                <label for="param-flags">Bayrak Değişim Hızı (Flag Rate): <span id="val-flags"
+
+
+
+
+
+
+
+                                        class="val-disp">Düşük (0.1)</span></label>
+
+
+
+
+
+
+
+                                <input type="range" id="param-flags" min="0" max="100" value="10"
+
+
+
+
+
+
+
+                                    class="form-control-range"
+
+
+
+
+
+
+
+                                    oninput="updateDisp('flags', this.value == 0 ? 'Yok' : (this.value < 30 ? 'Düşük' : (this.value < 75 ? 'Orta' : 'Yüksek')) + ' (0.' + this.value + ')')">
+
+
+
+
+
+
+
+                            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            <button class="btn" onclick="runSimulation()">
+
+
+
+
+
+
+
+                                <i class="fa-solid fa-play"></i> Paketi Gönder ve Analiz Et
+
+
+
+
+
+
+
+                            </button>
+
+
+
+
+
+
+
+                        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                        <!-- Real-time Console Output -->
+
+
+
+
+
+
+
+                        <div>
+
+
+
+
+
+
+
+                            <div class="section-title" style="margin-bottom: 1.5rem;">
+
+
+
+
+
+
+
+                                <i class="fa-solid fa-network-wired"></i> Ağ Algılama Terminali
+
+
+
+
+
+
+
+                            </div>
+
+
+
+
+
+
+
+                            <div class="simulation-console">
+
+
+
+
+
+
+
+                                <div class="radar-box" id="warning-radar">
+
+
+
+
+
+
+
+                                    <i class="fa-solid fa-circle-exclamation animate-pulse"></i> SALDIRI TESPİT EDİLDİ
+
+
+
+
+
+
+
+                                </div>
+
+
+
+
+
+
+
+                                <div class="console-line">
+
+
+
+
+
+
+
+                                    <span class="console-prompt">IDS_AG_DINLEME:</span>
+
+
+
+
+
+
+
+                                    <span class="console-output text-muted">Sistem ağ arayüzünü dinliyor. Test paketi
+
+
+
+
+
+
+
+                                        bekleniyor...</span>
+
+
+
+
+
+
+
+                                </div>
+
+
+
+
+
+
+
+                                <div id="console-dynamic-lines"
+
+
+
+
+
+
+
+                                    style="display:flex; flex-direction:column; gap: 0.6rem;">
+
+
+
+
+
+
+
+                                    <!-- Dynamic lines will go here -->
+
+
+
+
+
+
+
+                                </div>
+
+
+
+
+
+
+
+                            </div>
+
+
+
+
+
+
+
+                        </div>
+
+
+
+
+
+
+
+                    </div>
+
+
+
+
+
+
+
+                </div>
+
+
+
+
+
+
+
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </main>
+
+
+
+
+
+
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <script>
+
+
+
+
+
+
+
+        // Simple View Switcher
+
+
+
+
+
+
+
+        function switchSection(sectionId, element) {
+
+
+
+
+
+
+
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+
+
+
+
+
+
+
+            element.classList.add('active');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            document.getElementById('section-dashboard').classList.add('hidden');
+
+
+
+
+
+
+
+            document.getElementById('section-models').classList.add('hidden');
+
+
+
+
+
+
+
+            document.getElementById('section-playground').classList.add('hidden');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            document.getElementById('section-' + sectionId).classList.remove('hidden');
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // Matrix Tab Switcher
+
+
+
+
+
+
+
+        function switchMatrix(matrixKey, element) {
+
+
+
+
+
+
+
+            // Remove active classes from buttons
+
+
+
+
+
+
+
+            const parent = element.parentElement;
+
+
+
+
+
+
+
+            parent.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+
+
+
+
+
+
+
+            element.classList.add('active');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            // Hide all matrices
+
+
+
+
+
+
+
+            document.getElementById('matrix-ae').classList.add('hidden');
+
+
+
+
+
+
+
+            document.getElementById('matrix-lstm1').classList.add('hidden');
+
+
+
+
+
+
+
+            document.getElementById('matrix-lstm2').classList.add('hidden');
+
+
+
+
+
+
+
+            document.getElementById('matrix-lstm3').classList.add('hidden');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            // Show selected matrix
+
+
+
+
+
+
+
+            document.getElementById('matrix-' + matrixKey).classList.remove('hidden');
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // Slider value display updates
+
+
+
+
+
+
+
+        function updateDisp(param, val) {
+
+
+
+
+
+
+
+            document.getElementById('val-' + param).innerText = val;
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // Simulator Logic
+
+
+
+
+
+
+
+function runSimulation() {
+
+
+
+
+
+
+
+    const size = parseInt(document.getElementById('param-pktsize').value);
+
+
+
+
+
+
+
+    const duration = parseInt(document.getElementById('param-duration').value);
+
+
+
+
+
+
+
+    const iat = parseInt(document.getElementById('param-iat').value);
+
+
+
+
+
+
+
+    const flags = parseInt(document.getElementById('param-flags').value) / 100;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    const consoleDiv = document.getElementById('console-dynamic-lines');
+
+
+
+
+
+
+
+    consoleDiv.innerHTML = '';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    document.getElementById('warning-radar').classList.remove('active');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // Scoped variables to fix ReferenceError
+
+
+
+
+
+
+
+    let ae_decision = "NORMAL";
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // Step 1: Capture Packet
+
+
+
+
+
+
+
+    addConsoleLine("IDS_CAPTURED", `Ağ paketi alındı: Boyut=${size}B, Süre=${duration}ms, IAT=${iat}ms, BayrakOranı=${flags}`, "console-warning");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // Step 2: Autoencoder Reconstruction Error
+
+
+
+
+
+
+
+    // Logic: High flags and extreme size/duration will cause high error
+
+
+
+
+
+
+
+    setTimeout(() => {
+
+
+
+
+
+
+
+        let ae_mae = 0.012 + (flags * 0.18) + (size > 1000 ? 0.08 : 0) + (duration < 15 ? 0.05 : 0);
+
+
+
+        ae_mae = parseFloat(ae_mae.toFixed(6));
+
+
+
+        const threshold = 0.080305;
+
+
+
+        ae_decision = ae_mae > threshold ? "ANOMALİ (Saldırı)" : "NORMAL";
+
+
+
+        const ae_class = ae_mae > threshold ? "console-danger" : "console-success";
+
+
+
+
+
+
+
+        addConsoleLine("AUTOENCODER_ANALİZ", `Yeniden İnşa Hatası (MAE): ${ae_mae} | Eşik Değeri: ${threshold}`, "");
+
+
+
+        addConsoleLine("AUTOENCODER_KARAR", `Sonuç: ${ae_decision}`, ae_class);
+
+
+
+    }, 600);
+
+
+
+
+
+
+
+    // Step 3: LSTM, CNN and Hybrid Evaluation
+
+
+
+    setTimeout(() => {
+
+
+
+        let attack_prob = (flags * 0.8) + (duration < 60 ? 0.15 : 0) + (size > 1100 ? 0.1 : 0);
+
+
+
+        attack_prob = Math.min(1.0, Math.max(0.0, attack_prob));
+
+
+
+
+
+
+
+        // LSTM (Dengeli) Decision
+
+
+
+        const lstm_pred = attack_prob > 0.50 ? "Saldırı" : "Normal";
+
+
+
+
+
+
+
+        // CNN + ROC Decision
+
+
+
+        const cnn_pred = attack_prob > 0.4881 ? "Saldırı" : "Normal";
+
+
+
+
+
+
+
+        // Hybrid Model (AE stage 1 -> LSTM stage 2)
+
+
+
+        let ae_mse_hyb = 0.001 + (flags * 0.015) + (size > 1100 ? 0.005 : 0) + (duration < 80 ? 0.004 : 0);
+
+
+
+        ae_mse_hyb = parseFloat(ae_mse_hyb.toFixed(6));
+
+
+
+        const hyb_ae_threshold = 0.000918;
+
+
+
+        let hyb_pred = "Normal";
+
+
+
+        let hyb_log = "";
+
+
+
+
+
+
+
+        if (ae_mse_hyb <= hyb_ae_threshold) {
+
+
+
+            hyb_pred = "Normal";
+
+
+
+            hyb_log = "Temiz (AE Aşamasında Elendi)";
+
+
+
+        } else {
+
+
+
+            // Passed to LSTM
+
+
+
+            hyb_pred = lstm_pred;
+
+
+
+            hyb_log = `Şüpheli (AE MSE: ${ae_mse_hyb} > ${hyb_ae_threshold}) -> LSTM Kararı: ${lstm_pred.toUpperCase()}`;
+
+
+
+        }
+
+
+
+
+
+
+
+        addConsoleLine("LSTM_KARAR", `Dengeli LSTM Tahmini: ${lstm_pred.toUpperCase()}`, lstm_pred === "Saldırı" ? "console-danger" : "console-success");
+
+
+
+        addConsoleLine("CNN_ROC_KARAR", `CNN + ROC Tahmini (Eşik: 0.4881): ${cnn_pred.toUpperCase()}`, cnn_pred === "Saldırı" ? "console-danger" : "console-success");
+
+
+
+        addConsoleLine("HİBRİT_KARAR", `Hibrit Model Tahmini: ${hyb_pred.toUpperCase()} [${hyb_log}]`, hyb_pred === "Saldırı" ? "console-danger" : "console-success");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        if (cnn_pred === "Saldırı" || lstm_pred === "Saldırı" || hyb_pred === "Saldırı" || ae_decision === "ANOMALİ (Saldırı)") {
+
+
+
+
+
+
+
+            document.getElementById('warning-radar').classList.add('active');
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+    }, 1400);
+
+
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        function addConsoleLine(prompt, text, cssClass) {
+
+
+
+
+
+
+
+            const container = document.getElementById('console-dynamic-lines');
+
+
+
+
+
+
+
+            const line = document.createElement('div');
+
+
+
+
+
+
+
+            line.className = 'console-line';
+
+
+
+
+
+
+
+            line.innerHTML = `
+
+
+
+
+
+
+
+                <span class="console-prompt">${prompt}:</span>
+
+
+
+
+
+
+
+                <span class="console-output ${cssClass}">${text}</span>
+
+
+
+
+
+
+
+            `;
+
+
+
+
+
+
+
+            container.appendChild(line);
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // Initialize Bar Chart for comparison
+
+
+
+        document.addEventListener("DOMContentLoaded", function () {
+
+
+
+            const ctx = document.getElementById('barCompareChart').getContext('2d');
+
+
+
+            new Chart(ctx, {
+
+
+
+                type: 'bar',
+
+
+
+                data: {
+
+
+
+                    labels: ['Autoencoder', 'LSTM (Dengeli)', 'CNN + ROC', 'Hibrit Model'],
+
+
+
+                    datasets: [
+
+
+
+                        {
+
+
+
+                            label: 'Doğruluk (Accuracy)',
+
+
+
+                            data: [89.37, 96.39, 95.97, 98.77],
+
+
+
+                            backgroundColor: 'rgba(59, 130, 246, 0.6)',
+
+
+
+                            borderColor: 'rgba(59, 130, 246, 1)',
+
+
+
+                            borderWidth: 1.5
+
+
+
+                        },
+
+
+
+                        {
+
+
+
+                            label: 'Saldırı Yakalama Hassasiyeti (Precision)',
+
+
+
+                            data: [0.97, 74.90, 71.99, 96.96],
+
+
+
+                            backgroundColor: 'rgba(6, 182, 212, 0.6)',
+
+
+
+                            borderColor: 'rgba(6, 182, 212, 1)',
+
+
+
+                            borderWidth: 1.5
+
+
+
+                        },
+
+
+
+                        {
+
+
+
+                            label: 'Saldırı Yakalama Oranı (Recall)',
+
+
+
+                            data: [0.09, 94.67, 96.07, 90.18],
+
+
+
+                            backgroundColor: 'rgba(168, 85, 247, 0.6)',
+
+
+
+                            borderColor: 'rgba(168, 85, 247, 1)',
+
+
+
+                            borderWidth: 1.5
+
+
+
+                        },
+
+
+
+                        {
+
+
+
+                            label: 'F1-Skoru (Saldırı)',
+
+
+
+                            data: [0.17, 83.63, 82.29, 93.44],
+
+
+
+                            backgroundColor: 'rgba(16, 185, 129, 0.6)',
+
+
+
+                            borderColor: 'rgba(16, 185, 129, 1)',
+
+
+
+                            borderWidth: 1.5
+
+
+
+                        }
+
+
+
+                    ]
+
+
+
+                },
+
+
+
+
+
+
+
+                options: {
+
+
+
+
+
+
+
+                    responsive: true,
+
+
+
+
+
+
+
+                    maintainAspectRatio: false,
+
+
+
+
+
+
+
+                    plugins: {
+
+
+
+
+
+
+
+                        legend: {
+
+
+
+
+
+
+
+                            labels: {
+
+
+
+
+
+
+
+                                color: '#f3f4f6',
+
+
+
+
+
+
+
+                                font: {
+
+
+
+
+
+
+
+                                    family: 'Inter',
+
+
+
+
+
+
+
+                                    size: 11
+
+
+
+
+
+
+
+                                }
+
+
+
+
+
+
+
+                            }
+
+
+
+
+
+
+
+                        }
+
+
+
+
+
+
+
+                    },
+
+
+
+
+
+
+
+                    scales: {
+
+
+
+
+
+
+
+                        x: {
+
+
+
+
+
+
+
+                            grid: {
+
+
+
+
+
+
+
+                                color: 'rgba(255, 255, 255, 0.05)'
+
+
+
+
+
+
+
+                            },
+
+
+
+
+
+
+
+                            ticks: {
+
+
+
+
+
+
+
+                                color: '#9ca3af',
+
+
+
+
+
+
+
+                                font: {
+
+
+
+
+
+
+
+                                    family: 'Inter',
+
+
+
+
+
+
+
+                                    size: 11
+
+
+
+
+
+
+
+                                }
+
+
+
+
+
+
+
+                            }
+
+
+
+
+
+
+
+                        },
+
+
+
+
+
+
+
+                        y: {
+
+
+
+
+
+
+
+                            min: 0,
+
+
+
+
+
+
+
+                            max: 100,
+
+
+
+
+
+
+
+                            grid: {
+
+
+
+
+
+
+
+                                color: 'rgba(255, 255, 255, 0.05)'
+
+
+
+
+
+
+
+                            },
+
+
+
+
+
+
+
+                            ticks: {
+
+
+
+
+
+
+
+                                color: '#9ca3af',
+
+
+
+
+
+
+
+                                callback: function (value) {
+
+
+
+
+
+
+
+                                    return '%' + value;
+
+
+
+
+
+
+
+                                }
+
+
+
+
+
+
+
+                            }
+
+
+
+
+
+
+
+                        }
+
+
+
+
+
+
+
+                    }
+
+
+
+
+
+
+
+                }
+
+
+
+
+
+
+
+            });
+
+
+
+
+
+
+
+        });
+
+
+
+
+
+
+
+    </script>
+
+
+
+
+
+
+
+</body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</html>
